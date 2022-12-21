@@ -1,17 +1,23 @@
 from connection.connection_confg import DBconnection
 from repository import repository
 from models.model_api import *
+from log.logger import log
 import requests
+
+
+logger = log()
 
 
 async def gera_jogadas(compra):
     try:
+        url = "http://54.160.6.32:9002/login"
+        body = {
+            "id": compra.cpf
+        }
+        requests.post(url=url, json=body)
+
         with DBconnection() as db:
             id_client = repository.busca_id_cliente(cpf=compra.cpf, db=db.session)
-            if not id_client:
-                # requests.get()
-                while not id_client:
-                    id_client = repository.busca_id_cliente(cpf=compra.cpf, db=db.session)
 
             id_compra = await repository.insere_compra(id_client=id_client, compra=compra, db=db.session)
             if compra.gera_jogada == 0:
@@ -19,8 +25,10 @@ async def gera_jogadas(compra):
             else:
                 await repository.insere_jogada(id_client=id_client, id_compra=id_compra, db=db.session)
             db.session.commit()
+
     except Exception as e:
         print(e)
+        logger.error(f"Erro ao gerar jogadas, cliente: {compra.cpf}, erro: {e}")
         db.session.rollback()
 
 
@@ -45,9 +53,7 @@ def jogadas_vouchers(cpf):
                 lista_jogadas.append(arq)
 
             vouchers = repository.consulta_voucher(id_user=id_client, db=db.session)
-            print(vouchers)
             for voucher in vouchers:
-                print(voucher.checkout_utilizado)
                 arq2 = {
                     "id_voucher": voucher.id_voucher,
                     "id_compra": voucher.id_compra,
@@ -69,14 +75,11 @@ def jogadas_vouchers(cpf):
             "jogadas": lista_jogadas,
             "vouchers": lista_voucher
         }
-
-        print(arquivo)
-
         return arquivo
     except Exception as e:
         print(e)
-        response = Message(message="Não foi possivel localizar as jogadas")
-        return response
+        logger.error(f"Erro ao buscar informações, cliente: {cpf}, erro: {e}")
+        return False
 
 
 def consumir_jogada(cpf: str):
@@ -120,10 +123,12 @@ def consumir_jogada(cpf: str):
             repository.gera_voucher(jogada=com_jogada[1], produto=produto, db=db.session)
 
             db.session.commit()
-
+            a = 1 / 0
+            print(a)
             return jogadas
     except Exception as e:
         print(e)
+        logger.error(f"Erro ao buscar informações, cliente: {cpf}, erro: {e}")
         db.session.rollback()
         response = Message(message="Não foi possivel localizar as jogadas")
         return response
@@ -150,13 +155,12 @@ def consultar_voucher(voucher: str):
                 id_client=int(dados_voucher.id_usuario),
                 produto=produto
             )
-
             return arquivo
 
     except Exception as e:
         print(e)
-        response = Message(message="Não foi possivel localizar o Voucher")
-        return response
+        logger.error(f"Erro ao buscar informações, voucher: {voucher}, erro: {e}")
+        return False
 
 
 def consumir_voucher(dados):
@@ -174,6 +178,7 @@ def consumir_voucher(dados):
                 return response
     except Exception as e:
         print(e)
+        logger.error(f"Erro ao consumir voucher, voucher: {dados.voucher}, erro: {e}")
         db.session.rollback()
         response = Message(message="Não foi possivel utilizar o voucher")
         return response

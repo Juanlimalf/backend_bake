@@ -1,0 +1,23 @@
+2022-12-21 12:27:44,580 - ERROR - service.py:30 - Erro ao gerar jogadas, cliente: 44185567880, erro: division by zero
+2022-12-21 12:28:50,037 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:31:24,651 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:32:12,276 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:32:21,457 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:34:26,303 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:35:25,544 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:37:16,359 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:40:32,113 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:44:10,895 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:44:41,874 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:45:26,880 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:47:11,023 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 12:48:59,227 - ERROR - service.py:80 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-21 14:28:39,042 - ERROR - service.py:183 - Erro ao consumir voucher, voucher: 8616500002500954, erro: division by zero
+2022-12-21 14:30:12,010 - ERROR - service.py:161 - Erro ao buscar informações, voucher: 6491000002600954, erro: division by zero
+2022-12-21 14:31:20,415 - ERROR - service.py:161 - Erro ao buscar informações, voucher: 6491000002600954, erro: division by zero
+2022-12-21 14:33:10,388 - ERROR - service.py:30 - Erro ao gerar jogadas, cliente: 44185567880, erro: division by zero
+2022-12-21 15:42:43,094 - ERROR - service.py:34 - Erro ao gerar jogadas, cliente: 45185567670, erro: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(pymysql.err.IntegrityError) (1452, 'Cannot add or update a child row: a foreign key constraint fails (`meunagumo`.`bake_compras`, CONSTRAINT `bake_compras_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`))')
+[SQL: INSERT INTO bake_compras (loja, coo, checkout, id_usuario, gera_jogada) VALUES (%(loja)s, %(coo)s, %(checkout)s, %(id_usuario)s, %(gera_jogada)s)]
+[parameters: {'loja': '99', 'coo': '123456', 'checkout': '999', 'id_usuario': 0, 'gera_jogada': 0}]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)

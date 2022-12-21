@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, DateTime, Boolean, String, ForeignKey, u
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 from datetime import datetime, timedelta
-import random
 
 
 Base = declarative_base()

@@ -54,7 +54,6 @@ def consulta_voucher(id_user: int, db: object) -> list:
 def cons_voucher_uni(voucher: str, db: object):
 
     query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()
-    print(query)
     if query == []:
         return False
     elif query[0].utilizado == True:

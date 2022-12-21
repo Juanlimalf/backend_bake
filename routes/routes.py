@@ -3,8 +3,6 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models.model_api import *
 from service import service
-from typing import List
-
 
 # Configurando o FAST-API
 metadata = [{
@@ -38,9 +36,12 @@ async def gerar_jogadas(compras : Compras, background_task: BackgroundTasks):
 
     background_task.add_task(service.gera_jogadas, compras)
 
-    response = Message(message="jogada gerada com sucesso")
-
-    return response
+    if compras.gera_jogada != True:
+        response = Message(message="Não foi gerado jogada para essa compra, valor abaixo de R$50")
+        return response
+    else:
+        response = Message(message="Compra acima de R$50, jogada gerada com sucesso!")
+        return response
 
 
 @app.get("/voucher/consultar/{voucher}", status_code=200, tags=["PDV"], description="Consultar o voucher do cliente",
@@ -67,11 +68,14 @@ def utilizar_voucher(dados_voucher: UtilizarVoucher):
 
 @app.get("/jogadas/{cpf}", status_code=200, tags=["GAME"], description="Consultar as jogadas e vouchers do ref ao CPF",
          response_model=ListaJogadasVoucher, response_description="Resposta Padrão")
-def jogadas(cpf: str) -> dict:
+def jogadas(cpf: str):
 
     jogadas = service.jogadas_vouchers(cpf=cpf)
-
-    return jogadas
+    if jogadas == False:
+        response = {"message": "Não foi possivel localizar as jogadas"}
+        return JSONResponse(response, status_code=401)
+    else:
+        return jogadas
 
 
 @app.put("/jogadas/{cpf}", status_code=200, tags=["GAME"], description="Consumir as jogada e gerar voucher",

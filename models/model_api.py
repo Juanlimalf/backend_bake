@@ -10,7 +10,7 @@ class Compras(BaseModel):
     loja: str = Field(max_length=2, example="99")
     coo: str = Field(max_length=6, example="123456")
     checkout: str = Field(max_length=3, example="999")
-    cpf: str = Field(max_length=11, example="99999999999")
+    cpf: str = Field(max_length=11, min_length=11, example="99999999999")
     gera_jogada: bool = Field(example=0)
 
 
