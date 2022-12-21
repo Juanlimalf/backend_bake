@@ -84,11 +84,13 @@ def consumir_jogada(cpf: str):
         lista_jogadas = []
         with DBconnection() as db:
             id_client = repository.busca_id_cliente(cpf=cpf, db=db.session)
+            if id_client == False:
+                return ListaJogadas(quant_jogada=0, jogadas=[])
 
             com_jogada = repository.consumir_jogada(id_user=id_client, db=db.session)
 
             if com_jogada == False:
-                return ListaJogadas(quant_jogada=0, jogadas=[], )
+                return ListaJogadas(quant_jogada=0, jogadas=[])
 
             else:
                 for q in com_jogada[0]:

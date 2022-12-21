@@ -3,8 +3,12 @@ import random
 
 
 def busca_id_cliente(cpf: str, db: object) -> int:
-    query = db.query(Usuario.id_usuario).filter(Usuario.username == f'{cpf}').all()[0][0]
-    return query
+    query = db.query(Usuario.id_usuario).filter(Usuario.username == f'{cpf}').all()
+
+    if query == []:
+        return False
+    else:
+        return query[0][0]
 
 
 async def insere_compra(id_client: int, compra, db: object) -> int:
