@@ -47,12 +47,34 @@ def consulta_voucher(id_user: int, db: object) -> list:
     return query
 
 
+def cons_voucher_uni(voucher: str, db: object):
+
+    query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()
+    print(query)
+    if query == []:
+        return False
+    elif query[0].utilizado == True:
+        return False
+    else:
+        return query[0]
+
+
+def consulta_produto(id_prod: int, db: object) -> list:
+
+    query = db.query(BakeProdutos).filter_by(id_produto=id_prod).all()[0]
+
+    return query
+
+
 def consumir_jogada(id_user: int, db: object):
 
     jogada = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).\
         order_by(BakeJogadas.id_compra.asc()).first()
+
     if jogada == None:
+
         return False
+
     else:
         jogada.utilizado = 1
         query = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).all()
@@ -71,12 +93,33 @@ def random_produtos(db: object) -> object:
     return random.choice(prod)
 
 
-def gera_voucher(jogada: object, id_prod: int, db: object):
+def gera_voucher(jogada: object, produto: object, db: object):
 
     voucher = BakeVoucher(
         id_compra=jogada.id_compra,
-        id_produto=id_prod,
+        id_produto=produto.id_produto,
         id_usuario=jogada.id_usuario,
         id_jogada=jogada.id_jogada
     )
     db.add(voucher)
+    v = db.query(BakeVoucher).filter_by(id_compra=jogada.id_compra,
+                                        id_produto=produto.id_produto,
+                                        id_usuario=jogada.id_usuario,
+                                        id_jogada=jogada.id_jogada).order_by(BakeVoucher.id_voucher.desc()).first()
+
+    v.codigo_voucher = f"{'{:06}'.format(produto.cod_acesso)}" \
+                       f"{'{:05}'.format(v.id_voucher)}" \
+                       f"{'{:05d}'.format(jogada.id_usuario)}"
+
+
+def consumir_voucher(dados_voucher: object, db: object):
+
+    update = db.query(BakeVoucher).filter_by(codigo_voucher=dados_voucher.voucher).all()[0]
+    if update.utilizado == 1:
+        return False
+    else:
+        update.cupom_utilizado = dados_voucher.coo
+        update.checkout_utilizado = dados_voucher.checkout
+        update.utilizado = 1
+    return True
+

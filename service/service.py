@@ -45,7 +45,9 @@ def jogadas_vouchers(cpf):
                 lista_jogadas.append(arq)
 
             vouchers = repository.consulta_voucher(id_user=id_client, db=db.session)
+            print(vouchers)
             for voucher in vouchers:
+                print(voucher.checkout_utilizado)
                 arq2 = {
                     "id_voucher": voucher.id_voucher,
                     "id_compra": voucher.id_compra,
@@ -55,8 +57,10 @@ def jogadas_vouchers(cpf):
                     "data_inclusao": str(voucher.data_inclusao),
                     "data_vencimento": str(voucher.data_vencimento),
                     "cupom_utilizado": str(voucher.cupom_utilizado),
+                    "checkout_utilizado": str(voucher.checkout_utilizado),
                     "utilizado": voucher.utilizado,
-                    "data_utilizado": str(voucher.data_utilizado)
+                    "data_atualizacao": str(voucher.data_atualizacao),
+                    "codigo_voucher": str(voucher.codigo_voucher)
                 }
                 lista_voucher.append(arq2)
 
@@ -66,10 +70,12 @@ def jogadas_vouchers(cpf):
             "vouchers": lista_voucher
         }
 
+        print(arquivo)
+
         return arquivo
     except Exception as e:
         print(e)
-        response = Mensage(message=f"Não foi possivel localizar as jogadas")
+        response = Message(message="Não foi possivel localizar as jogadas")
         return response
 
 
@@ -78,10 +84,12 @@ def consumir_jogada(cpf: str):
         lista_jogadas = []
         with DBconnection() as db:
             id_client = repository.busca_id_cliente(cpf=cpf, db=db.session)
+
             com_jogada = repository.consumir_jogada(id_user=id_client, db=db.session)
 
-            if com_jogada[0] == False:
-                return ListaJogadas(quant_jogada=0, jogadas=[])
+            if com_jogada == False:
+                return ListaJogadas(quant_jogada=0, jogadas=[], )
+
             else:
                 for q in com_jogada[0]:
                     jogada = {
@@ -97,7 +105,7 @@ def consumir_jogada(cpf: str):
             produto = repository.random_produtos(db=db.session)
 
             jogadas = {
-                "produto_sortedo": {
+                "produto_sorteado": {
                     "plu": produto.plu,
                     "cod_acesso": produto.cod_acesso,
                     "descricao_produto": produto.descricao_produto,
@@ -107,7 +115,7 @@ def consumir_jogada(cpf: str):
                 "jogadas": lista_jogadas
             }
 
-            voucher = repository.gera_voucher(jogada=com_jogada[1], id_prod=produto.id_produto, db=db.session)
+            repository.gera_voucher(jogada=com_jogada[1], produto=produto, db=db.session)
 
             db.session.commit()
 
@@ -115,5 +123,55 @@ def consumir_jogada(cpf: str):
     except Exception as e:
         print(e)
         db.session.rollback()
-        response = Mensage(message=f"Não foi possivel localizar as jogadas")
+        response = Message(message="Não foi possivel localizar as jogadas")
+        return response
+
+
+def consultar_voucher(voucher: str):
+    try:
+        with DBconnection() as db:
+
+            dados_voucher = repository.cons_voucher_uni(voucher=voucher, db=db.session)
+
+            if dados_voucher == False:
+                return dados_voucher
+
+            dados_produto = repository.consulta_produto(id_prod=dados_voucher.id_produto, db=db.session)
+
+            produto = Produto(
+                plu=dados_produto.plu,
+                cod_acesso=dados_produto.cod_acesso,
+                descricao_produto=dados_produto.descricao_produto,
+                categoria=dados_produto.categoria
+            )
+            arquivo = ProdutoVoucher(
+                id_client=int(dados_voucher.id_usuario),
+                produto=produto
+            )
+
+            return arquivo
+
+    except Exception as e:
+        print(e)
+        response = Message(message="Não foi possivel localizar o Voucher")
+        return response
+
+
+def consumir_voucher(dados):
+    try:
+        with DBconnection() as db:
+
+            use_voucher = repository.consumir_voucher(dados, db.session)
+
+            if use_voucher == False:
+                response = Message(message="Voucher ja foi utilizado")
+                return response
+            else:
+                db.session.commit()
+                response = Message(message="Voucher utilizado comm sucesso")
+                return response
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        response = Message(message="Não foi possivel utilizar o voucher")
         return response

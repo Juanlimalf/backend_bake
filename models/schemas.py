@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, DateTime, Boolean, String, ForeignKey, u
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 from datetime import datetime, timedelta
+import random
 
 
 Base = declarative_base()
@@ -54,12 +55,15 @@ class BakeVoucher(Base):
     data_inclusao = Column(DateTime, server_default=func.now())
     data_vencimento = Column(DateTime, default=data_validade)
     cupom_utilizado = Column(String(6))
+    checkout_utilizado = Column(String(3))
     utilizado = Column(Boolean, default=0)
-    data_utilizado = Column(DateTime, onupdate=func.now())
+    data_atualizacao = Column(DateTime, onupdate=func.now())
+    codigo_voucher = Column(Integer)
 
     def __repr__(self):
         return f"{self.id_voucher}, {self.id_compra}, {self.id_produto}, {self.id_usuario}, {self.id_jogada}, " \
-               f"{self.data_inclusao}, {self.data_vencimento}, {self.cupom_utilizado}, {self.utilizado}, {self.data_utilizado}"
+               f"{self.data_inclusao}, {self.data_vencimento}, {self.cupom_utilizado}, {self.checkout_utilizado}, " \
+               f"{self.utilizado}, {self.data_atualizacao}, {self.codigo_voucher}"
 
 
 class BakeCompras(Base):
