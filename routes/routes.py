@@ -84,4 +84,8 @@ def utilizar_jogadas(cpf: str):
 
     response = service.consumir_jogada(cpf=cpf)
 
-    return response
+    if response == False:
+        response = {"message": "Não foi possivel localizar as jogadas"}
+        return JSONResponse(response, status_code=401)
+    else:
+        return response

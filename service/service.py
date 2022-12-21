@@ -121,17 +121,13 @@ def consumir_jogada(cpf: str):
             }
 
             repository.gera_voucher(jogada=com_jogada[1], produto=produto, db=db.session)
-
             db.session.commit()
-            a = 1 / 0
-            print(a)
             return jogadas
     except Exception as e:
         print(e)
         logger.error(f"Erro ao buscar informações, cliente: {cpf}, erro: {e}")
         db.session.rollback()
-        response = Message(message="Não foi possivel localizar as jogadas")
-        return response
+        return False
 
 
 def consultar_voucher(voucher: str):
