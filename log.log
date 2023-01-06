@@ -1,3 +1,7 @@
 2022-12-21 16:09:19,728 - ERROR - service.py:131 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
 2022-12-21 16:12:29,199 - ERROR - service.py:133 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
 2022-12-21 16:13:15,796 - ERROR - service.py:133 - Erro ao buscar informações, cliente: 44185567880, erro: division by zero
+2022-12-22 17:46:34,706 - ERROR - service.py:178 - Erro ao consumir voucher, voucher: 1231231231231231, erro: list index out of range
+2022-12-22 17:46:52,041 - ERROR - service.py:178 - Erro ao consumir voucher, voucher: 1231231231231231, erro: list index out of range
+2023-01-06 17:44:35,222 - ERROR - service.py:129 - Erro ao buscar informações, cliente: 44185567880, erro: Query.filter() got an unexpected keyword argument 'tipo'
+2023-01-06 17:44:43,355 - ERROR - service.py:129 - Erro ao buscar informações, cliente: 44185567880, erro: Query.filter() got an unexpected keyword argument 'tipo'

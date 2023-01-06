@@ -3,6 +3,7 @@ from repository import repository
 from models.model_api import *
 from log.logger import log
 import requests
+from fastapi.responses import JSONResponse
 
 
 logger = log()
@@ -145,7 +146,8 @@ def consultar_voucher(voucher: str):
                 plu=dados_produto.plu,
                 cod_acesso=dados_produto.cod_acesso,
                 descricao_produto=dados_produto.descricao_produto,
-                categoria=dados_produto.categoria
+                categoria=dados_produto.categoria,
+                tipo=dados_produto.tipo
             )
             arquivo = ProdutoVoucher(
                 id_client=int(dados_voucher.id_usuario),
@@ -166,15 +168,15 @@ def consumir_voucher(dados):
             use_voucher = repository.consumir_voucher(dados, db.session)
 
             if use_voucher == False:
-                response = Message(message="Voucher ja foi utilizado")
-                return response
+                response = {"message": "Voucher ja foi utilizado"}
+                return JSONResponse(response, status_code=400)
             else:
                 db.session.commit()
-                response = Message(message="Voucher utilizado comm sucesso")
-                return response
+                response = {"message": "Voucher utilizado com sucesso"}
+                return JSONResponse(response, status_code=200)
     except Exception as e:
         print(e)
         logger.error(f"Erro ao consumir voucher, voucher: {dados.voucher}, erro: {e}")
         db.session.rollback()
-        response = Message(message="Não foi possivel utilizar o voucher")
-        return response
+        response = {"message": "Não foi possivel utilizar o voucher"}
+        return JSONResponse(response, status_code=400)

@@ -87,13 +87,18 @@ def consumir_jogada(id_user: int, db: object):
 
 def random_produtos(db: object) -> object:
 
-    query = db.query(BakeProdutos.categoria).distinct().all()
+    controle = random.randint(1, 5)
 
-    cat_rand = random.choice(query)[0]
+    print(controle)
 
-    prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
-
-    return random.choice(prod)
+    if controle == 1:
+        query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
+        cat_rand = random.choice(query)[0]
+        prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
+        return random.choice(prod)
+    else:
+        prod = db.query(BakeProdutos).filter_by(tipo="D", ativo=1).all()
+        return random.choice(prod)
 
 
 def gera_voucher(jogada: object, produto: object, db: object):
