@@ -19,8 +19,6 @@ class Jogadas(BaseModel):
     id_compra: int = Field(example=1)
     id_usuario: int = Field(example=1)
     data_inclusao: str = Field(example="2000-01-01T00:00:00")
-    data_utilizacao: str = Field(example="2000-01-01T00:00:00")
-    utilizado: bool = Field(example=False)
 
 
 class Produto(BaseModel):
@@ -32,15 +30,12 @@ class Produto(BaseModel):
 
 
 class Voucher(BaseModel):
-    id_voucher: int = Field(example=1)
     id_compra: int = Field(example=1)
     id_produto: int = Field(example=1)
-    id_usuario: int = Field(example=1)
-    id_jogada: int = Field(example=1)
+    codigo_acesso: str = Field(example="123456")
+    descricao_produto: str = Field(example="Descrição produto voucher")
     data_inclusao: str = Field(example="2000-01-01T00:00:00")
     data_vencimento: str = Field(example="2000-01-01T00:00:00")
-    cupom_utilizado: str = Field(max_length=6, example="123456")
-    checkout_utilizado: str = Field(max_length=4, example="123", default="123")
     utilizado: bool = Field(example=0)
     data_atualizacao: str = Field(example="2000-01-01T00:00:00")
     codigo_voucher: str = Field(example="1234567891234567")

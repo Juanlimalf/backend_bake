@@ -89,8 +89,6 @@ def random_produtos(db: object) -> object:
 
     controle = random.randint(1, 5)
 
-    print(controle)
-
     if controle == 1:
         query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
         cat_rand = random.choice(query)[0]
