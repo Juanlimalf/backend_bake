@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, DateTime, Boolean, String, ForeignKey, update
+from sqlalchemy import Column, Integer, DateTime, Boolean, String, ForeignKey, Float
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 from datetime import datetime, timedelta
@@ -72,6 +72,7 @@ class BakeCompras(Base):
     loja = Column(String(2))
     coo = Column(String(6))
     checkout = Column(String(3))
+    valor = Column(Float)
     data_inclusao = Column(DateTime, server_default=func.now())
     id_usuario = Column(Integer)
     gera_jogada = Column(Boolean)

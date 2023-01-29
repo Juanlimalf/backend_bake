@@ -12,7 +12,7 @@ metadata = [{
 
 app = FastAPI(title="Roleta Bakeshop",
               description="API - Roleta Bakeshop",
-              version="0.0.2",
+              version="0.1.0",
               openapi_tags=metadata)
 
 app.add_middleware(
@@ -26,15 +26,15 @@ app.add_middleware(
 # Endpoint para gerar as jogadas, PDV vai gerar para todas as compras acima de R$50
 @app.post("/jogadas/gerar", status_code=200, tags=["PDV"], description="Gerar jogadas para o cliente",
           response_model=Message, response_description="Resposta Padrão")
-async def gerar_jogadas(compras : Compras, background_task: BackgroundTasks):
+async def gerar_jogadas(compra : Compras):
 
-    background_task.add_task(service.gera_jogadas, compras)
+    jogada = service.gera_jogadas(compra)
 
-    if compras.gera_jogada != True:
-        response = Message(message="Não foi gerado jogada para essa compra, valor abaixo de R$50")
+    if jogada == True:
+        response = Message(message="Valor acima de R$50, jogada gerada com sucesso!")
         return response
     else:
-        response = Message(message="Compra acima de R$50, jogada gerada com sucesso!")
+        response = Message(message="Valor abaixo de R$50, Não foi gerado jogada para essa compra.")
         return response
 
 
@@ -88,3 +88,9 @@ def utilizar_jogadas(cpf: str):
         return JSONResponse(response, status_code=401)
     else:
         return response
+
+
+@app.get("/compras/{cpf}", status_code=200, tags=["Compra"], description="Consultar as Compras registradas ref ao CPF",
+         response_model=Compras, response_description="Resposta Padrão")
+def consulta_compras():
+    pass

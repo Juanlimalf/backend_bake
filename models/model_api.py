@@ -7,11 +7,11 @@ class Message(BaseModel):
 
 
 class Compras(BaseModel):
+    cpf: str = Field(max_length=11, min_length=11, example="99999999999")
     loja: str = Field(max_length=2, example="99")
     coo: str = Field(max_length=6, example="123456")
     checkout: str = Field(max_length=3, example="999")
-    cpf: str = Field(max_length=11, min_length=11, example="99999999999")
-    gera_jogada: bool = Field(example=0)
+    valor: float = Field(example=999.99)
 
 
 class Jogadas(BaseModel):
@@ -19,6 +19,7 @@ class Jogadas(BaseModel):
     id_compra: int = Field(example=1)
     id_usuario: int = Field(example=1)
     data_inclusao: str = Field(example="2000-01-01T00:00:00")
+    utilizado: bool = Field(example=False)
 
 
 class Produto(BaseModel):
@@ -68,4 +69,3 @@ class UtilizarVoucher(BaseModel):
 class ProdutoVoucher(BaseModel):
     id_client: int
     produto: Produto
-

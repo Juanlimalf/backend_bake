@@ -11,13 +11,14 @@ def busca_id_cliente(cpf: str, db: object) -> int:
         return query[0][0]
 
 
-async def insere_compra(id_client: int, compra, db: object) -> int:
+def insere_compra(id_client: int, gera_jogada: bool, compra, db: object) -> int:
     compra = BakeCompras(
         loja=str(compra.loja),
         coo=str(compra.coo),
         checkout=str(compra.checkout),
+        valor=float(compra.valor),
         id_usuario=int(id_client),
-        gera_jogada=bool(compra.gera_jogada)
+        gera_jogada=gera_jogada
     )
     db.add(compra)
 
@@ -25,10 +26,11 @@ async def insere_compra(id_client: int, compra, db: object) -> int:
         filter(BakeCompras.coo == compra.coo and
                BakeCompras.checkout == compra.checkout and
                BakeCompras.loja == compra.loja).order_by(BakeCompras.id_compra.desc()).first()[0]
+
     return id_compra
 
 
-async def insere_jogada(id_compra: int, id_client: int, db: object):
+def insere_jogada(id_compra: int, id_client: int, db: object):
     jogada = BakeJogadas(
         id_compra=id_compra,
         id_usuario=id_client,
@@ -39,7 +41,7 @@ async def insere_jogada(id_compra: int, id_client: int, db: object):
 
 def consulta_jogadas(id_user: int, db: object) -> list:
 
-    query = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).all()
+    query = db.query(BakeJogadas).filter_by(id_usuario=id_user).all()
 
     return query
 
@@ -87,16 +89,21 @@ def consumir_jogada(id_user: int, db: object):
 
 def random_produtos(db: object) -> object:
 
-    controle = random.randint(1, 5)
+    # controle = random.randint(1, 5)
+    #
+    # if controle == 1:
+    #     query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
+    #     cat_rand = random.choice(query)[0]
+    #     prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
+    #     return random.choice(prod)
+    # else:
+    #     prod = db.query(BakeProdutos).filter_by(tipo="D", ativo=1).all()
+    #     return random.choice(prod)
+    query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
+    cat_rand = random.choice(query)[0]
+    prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
+    return random.choice(prod)
 
-    if controle == 1:
-        query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
-        cat_rand = random.choice(query)[0]
-        prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
-        return random.choice(prod)
-    else:
-        prod = db.query(BakeProdutos).filter_by(tipo="D", ativo=1).all()
-        return random.choice(prod)
 
 
 def gera_voucher(jogada: object, produto: object, db: object):

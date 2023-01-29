@@ -9,7 +9,7 @@ logger = log()
 
 
 # Funcao assincrona para gerar jogadas
-async def gera_jogadas(compra):
+def gera_jogadas(compra):
     try:
         # feito a requisição na API do "Meu Nagumo", caso o cliente, não tenha cadastro.
         url = "http://54.160.6.32:9002/login"
@@ -21,21 +21,31 @@ async def gera_jogadas(compra):
         with DBconnection() as db:
             # Buscando o ID do cliente.
             id_client = repository.busca_id_cliente(cpf=compra.cpf, db=db.session)
+
+            # Validando se a compra ira gerar jogada.
+            if compra.valor >= 50:
+                gera_jog = 1
+            else:
+                gera_jog = 0
+
             # Função para inserir a compra no banco
-            id_compra = await repository.insere_compra(id_client=id_client, compra=compra, db=db.session)
-            # Verificar se a compra gera jogada.
-            if compra.gera_jogada == 0:
+            id_compra = repository.insere_compra(id_client=id_client, gera_jogada=bool(gera_jog),
+                                                 compra=compra, db=db.session)
+
+            if gera_jog == 0:
                 pass
+                db.session.commit()
+                return False
             else:
                 # inserindo a jogada no banco.
-                await repository.insere_jogada(id_client=id_client, id_compra=id_compra, db=db.session)
-            db.session.commit()
+                repository.insere_jogada(id_client=id_client, id_compra=id_compra, db=db.session)
+                db.session.commit()
+                return True
 
     except Exception as e:
         print(e)
         logger.error(f"Erro ao gerar jogadas, cliente: {compra.cpf}, erro: {e}")
         db.session.rollback()
-
 
 # Função para consultar jogadas e voucher
 def jogadas_vouchers(cpf):
@@ -55,7 +65,8 @@ def jogadas_vouchers(cpf):
                     "id_jogada": jogada.id_jogada,
                     "id_compra": jogada.id_compra,
                     "id_usuario": jogada.id_usuario,
-                    "data_inclusao": str(jogada.data_inclusao)
+                    "data_inclusao": str(jogada.data_inclusao),
+                    "utilizado": jogada.utilizado
                 }
                 lista_jogadas.append(arq)
             # Consultando os vouchers cliente.
@@ -101,22 +112,25 @@ def consumir_jogada(cpf: str):
             if id_client == False:
                 return ListaJogadas(quant_jogada=0, jogadas=[])
             # Consumindo a jogada cliente
-            com_jogadas = repository.consumir_jogada(id_user=id_client, db=db.session)
+            cons_jogadas = repository.consumir_jogada(id_user=id_client, db=db.session)
             # Validando se jogada existe
-            if com_jogadas == False:
+            if cons_jogadas == False:
                 return ListaJogadas(quant_jogada=0, jogadas=[])
             else:
                 # Montando o arquivo de jogadas e inserindo na lista
-                for jogada in com_jogadas[0]:
+                for jogada in cons_jogadas[0]:
                     arq = {
                         "id_jogada": jogada.id_jogada,
                         "id_compra": jogada.id_compra,
                         "id_usuario": jogada.id_usuario,
-                        "data_inclusao": str(jogada.data_inclusao)
+                        "data_inclusao": str(jogada.data_inclusao),
+                        "utilizado": jogada.utilizado
                     }
                     lista_jogadas.append(arq)
+
             # Sortendo um produto para essa jogada.
             produto = repository.random_produtos(db=db.session)
+
             # Montando o json
             jogadas = {
                 "produto_sorteado": {
@@ -126,11 +140,12 @@ def consumir_jogada(cpf: str):
                     "categoria": produto.categoria,
                     "tipo": produto.tipo
                 },
-                "quant_jogada": len(com_jogadas[0]),
+                "quant_jogada": len(cons_jogadas[0]),
                 "jogadas": lista_jogadas
             }
+
             # Gerando voucher para o cliente.
-            repository.gera_voucher(jogada=com_jogadas[1], produto=produto, db=db.session)
+            repository.gera_voucher(jogada=cons_jogadas[1], produto=produto, db=db.session)
             db.session.commit()
             return jogadas
     except Exception as e:
