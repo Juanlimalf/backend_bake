@@ -39,8 +39,8 @@ class BakeProdutos(Base):
     tipo = Column(String(1))
 
     def __repr__(self):
-        return f"{self.id_produto}, {self.plu}, {self.cod_acesso}, {self.descricao_produto}, " \
-               f"{self.categoria}, {self.ativo}, {self.tipo}"
+        return f"""{self.id_produto}, {self.plu}, {self.cod_acesso}, {self.descricao_produto}, 
+                    {self.categoria}, {self.ativo}, {self.tipo}"""
 
 
 class BakeVoucher(Base):
@@ -53,16 +53,16 @@ class BakeVoucher(Base):
     id_jogada = Column(ForeignKey("bake_jogadas.id_jogada"), nullable=False)
     data_inclusao = Column(DateTime, server_default=func.now())
     data_vencimento = Column(DateTime, default=data_validade)
-    cupom_utilizado = Column(String(6))
-    checkout_utilizado = Column(String(3))
+    ativo = Column(Boolean, default=0)
     utilizado = Column(Boolean, default=0)
     data_atualizacao = Column(DateTime, onupdate=func.now())
     codigo_voucher = Column(Integer)
+    valor = Column(Float)
 
     def __repr__(self):
-        return f"{self.id_voucher}, {self.id_compra}, {self.id_produto}, {self.id_usuario}, {self.id_jogada}, " \
-               f"{self.data_inclusao}, {self.data_vencimento}, {self.cupom_utilizado}, {self.checkout_utilizado}, " \
-               f"{self.utilizado}, {self.data_atualizacao}, {self.codigo_voucher}"
+        return f"""{self.id_voucher}, {self.id_compra}, {self.id_produto}, {self.id_usuario}, {self.id_jogada}, 
+                {self.data_inclusao}, {self.data_vencimento}, {self.ativo}, {self.utilizado}, {self.data_atualizacao}, 
+                {self.codigo_voucher}, {self.valor}"""
 
 
 class BakeCompras(Base):
@@ -76,10 +76,11 @@ class BakeCompras(Base):
     data_inclusao = Column(DateTime, server_default=func.now())
     id_usuario = Column(Integer)
     gera_jogada = Column(Boolean)
+    usuario_inclusao = Column(String)
 
     def __repr__(self):
-        return f"{self.id_compra}, {self.loja}, {self.coo}, {self.checkout}, " \
-               f"{str(self.data_inclusao)}, {self.id_usuario}, {self.gera_jogada}"
+        return f"""{self.id_compra}, {self.loja}, {self.coo}, {self.checkout}, 
+            {str(self.data_inclusao)}, {self.id_usuario}, {self.gera_jogada}, {self.usuario_inclusao}"""
 
 
 class Usuario(Base):
@@ -87,3 +88,6 @@ class Usuario(Base):
 
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String)
+
+    def __repr__(self):
+        return f"{self.id_usuario}, {self.username}"

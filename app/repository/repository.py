@@ -1,5 +1,6 @@
-from models.schemas import BakeProdutos, BakeVoucher, BakeCompras, Usuario, BakeJogadas
+from app.models.schemas import BakeProdutos, BakeVoucher, BakeCompras, Usuario, BakeJogadas
 import random
+from datetime import datetime
 
 
 def busca_id_cliente(cpf: str, db: object) -> int:
@@ -18,7 +19,8 @@ def insere_compra(id_client: int, gera_jogada: bool, compra, db: object) -> int:
         checkout=str(compra.checkout),
         valor=float(compra.valor),
         id_usuario=int(id_client),
-        gera_jogada=gera_jogada
+        gera_jogada=gera_jogada,
+        usuario_inclusao=str(compra.user_inclusao)
     )
     db.add(compra)
 
@@ -28,6 +30,31 @@ def insere_compra(id_client: int, gera_jogada: bool, compra, db: object) -> int:
                BakeCompras.loja == compra.loja).order_by(BakeCompras.id_compra.desc()).first()[0]
 
     return id_compra
+
+
+def consultaCompras(id_client: int, db: object):
+
+    compra = db.query(BakeCompras).filter(BakeCompras.id_usuario == id_client).all()
+
+    return compra
+
+
+def consulta_compra(id_client: int, id_compra: int, db: object):
+
+    compra = db.query(BakeCompras)\
+        .filter_by(id_usuario=id_client, id_compra=id_compra)\
+        .all()
+
+    return compra
+
+
+def verifica_Compra(compra, db):
+
+    query = db.query(BakeCompras).filter_by(coo=compra.coo, loja=compra.loja, checkout=compra.checkout).all()
+    if query == []:
+        return False
+    else:
+        return True
 
 
 def insere_jogada(id_compra: int, id_client: int, db: object):
@@ -41,7 +68,7 @@ def insere_jogada(id_compra: int, id_client: int, db: object):
 
 def consulta_jogadas(id_user: int, db: object) -> list:
 
-    query = db.query(BakeJogadas).filter_by(id_usuario=id_user).all()
+    query = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).all()
 
     return query
 
@@ -56,17 +83,29 @@ def consulta_voucher(id_user: int, db: object) -> list:
 def cons_voucher_uni(voucher: str, db: object):
 
     query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()
-    if query == []:
-        return False
-    elif query[0].utilizado == True:
-        return False
-    else:
-        return query[0]
+
+    return query
+
+
+def get_vouchers(loja: str, data: str, db: object):
+
+    data_formatada = datetime.strptime(data, "%Y-%m-%d")
+
+    q_sql = f'''select bc.loja, bv.id_voucher, bv.codigo_voucher, bv.valor, bv.data_inclusao, bv.utilizado 
+                from bake_vouchers bv
+                inner join bake_compras bc on bv.id_compra = bc.id_compra 
+                WHERE CAST(bv.data_atualizacao as date) = '{data_formatada}'
+                and bc.loja = '{loja}'
+                and bv.utilizado = 1'''
+
+    query = db.get_engine().execute(q_sql).all()
+
+    return query
 
 
 def consulta_produto(id_prod: int, db: object) -> list:
 
-    query = db.query(BakeProdutos).filter_by(id_produto=id_prod).all()[0]
+    query = db.query(BakeProdutos).filter_by(id_produto=id_prod).all()
 
     return query
 
@@ -87,7 +126,7 @@ def consumir_jogada(id_user: int, db: object):
         return query, jogada
 
 
-def random_produtos(db: object) -> object:
+def random_produtos(categoria: str, db: object) -> object:
 
     # controle = random.randint(1, 5)
     #
@@ -99,11 +138,10 @@ def random_produtos(db: object) -> object:
     # else:
     #     prod = db.query(BakeProdutos).filter_by(tipo="D", ativo=1).all()
     #     return random.choice(prod)
-    query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
-    cat_rand = random.choice(query)[0]
-    prod = db.query(BakeProdutos).filter_by(categoria=str(cat_rand), ativo=1).all()
+    # query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
+    # cat_rand = random.choice(query)[0]
+    prod = db.query(BakeProdutos).filter_by(categoria=str(categoria), ativo=1).all()
     return random.choice(prod)
-
 
 
 def gera_voucher(jogada: object, produto: object, db: object):
@@ -120,19 +158,27 @@ def gera_voucher(jogada: object, produto: object, db: object):
                                         id_usuario=jogada.id_usuario,
                                         id_jogada=jogada.id_jogada).order_by(BakeVoucher.id_voucher.desc()).first()
 
-    v.codigo_voucher = f"{'{:06}'.format(produto.cod_acesso)}" \
-                       f"{'{:05}'.format(v.id_voucher)}" \
-                       f"{'{:05d}'.format(jogada.id_usuario)}"
+    v.codigo_voucher = f"{'{:05d}'.format(jogada.id_usuario)}" \
+                       f"{'{:06}'.format(produto.cod_acesso)}" \
+                       f"{'{:05}'.format(v.id_voucher)}"
 
 
-def consumir_voucher(dados_voucher: object, db: object):
+def consumir_voucher(voucher: object, db: object):
 
-    update = db.query(BakeVoucher).filter_by(codigo_voucher=dados_voucher.voucher).all()[0]
-    if update.utilizado == 1:
+    query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
+    if query.utilizado == 1:
         return False
     else:
-        update.cupom_utilizado = dados_voucher.coo
-        update.checkout_utilizado = dados_voucher.checkout
-        update.utilizado = 1
-    return True
+        query.utilizado = 1
+        return True
 
+
+def ativar_voucher(voucher: object, valor:float, db: object):
+
+    query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
+    query.ativo = 1
+    query.valor = valor
+
+    response = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
+
+    return response

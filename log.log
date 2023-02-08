@@ -1,2 +1,101 @@
 2023-01-25 08:05:12,455 - ERROR - service.py:98 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'rds.meunagumo.com.br' (timed out)")
 (Background on this error at: https://sqlalche.me/e/14/e3q8)
+2023-02-02 17:15:56,333 - ERROR - service.py:47 - Erro ao gerar jogadas, cliente: 44185567880, erro: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(pymysql.err.OperationalError) (1054, "Unknown column 'user_inclusao' in 'field list'")
+[SQL: INSERT INTO bake_compras (loja, coo, checkout, valor, id_usuario, gera_jogada, user_inclusao) VALUES (%(loja)s, %(coo)s, %(checkout)s, %(valor)s, %(id_usuario)s, %(gera_jogada)s, %(user_inclusao)s)]
+[parameters: {'loja': '99', 'coo': '123456', 'checkout': '999', 'valor': 999.99, 'id_usuario': 954, 'gera_jogada': 1, 'user_inclusao': 'juan.costa'}]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2023-02-02 17:17:05,440 - ERROR - service.py:47 - Erro ao gerar jogadas, cliente: 44185567880, erro: 'user_inclusao' is an invalid keyword argument for BakeCompras
+2023-02-02 17:35:08,354 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:36:01,571 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:37:47,893 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:39:12,639 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:40:13,409 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:41:33,329 - ERROR - service.py:73 - Erro ao buscar informações de compras, CPF: 44185567880 erro: 'BakeCompras' object has no attribute 'user_inclusao'
+2023-02-02 17:57:49,030 - ERROR - service.py:211 - Erro ao buscar informações, voucher: 7966200010200954, erro: name 'Produto' is not defined
+2023-02-02 17:58:48,985 - ERROR - service.py:211 - Erro ao buscar informações, voucher: 7966200010200954, erro: name 'Produto' is not defined
+2023-02-03 13:56:55,723 - ERROR - service_vouchers.py:56 - Erro ao ativar voucher, voucher: 245941001120095, erro: list index out of range
+2023-02-03 14:04:08,752 - ERROR - service_jogadas.py:114 - Erro ao buscar informações, cliente: 44185567880, erro: busca_id_cliente() missing 1 required positional argument: 'valor'
+2023-02-03 14:04:11,548 - ERROR - service_jogadas.py:114 - Erro ao buscar informações, cliente: 44185567880, erro: busca_id_cliente() missing 1 required positional argument: 'valor'
+2023-02-03 14:05:04,720 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2932200011300954, erro: 'DBconnection' object has no attribute 'query'
+2023-02-03 14:05:23,670 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2932200011300954, erro: 'DBconnection' object has no attribute 'query'
+2023-02-03 14:07:02,809 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'bool' object has no attribute 'id_produto'
+2023-02-03 14:07:18,680 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'bool' object has no attribute 'id_produto'
+2023-02-03 14:11:15,328 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'bool' object has no attribute 'id_produto'
+2023-02-03 14:11:38,960 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'bool' object has no attribute 'id_produto'
+2023-02-03 14:12:22,647 - ERROR - service_vouchers.py:58 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'bool' object is not subscriptable
+2023-02-03 14:19:33,474 - ERROR - service_vouchers.py:59 - Erro ao ativar voucher, voucher: 245959001110095, erro: list index out of range
+2023-02-03 14:19:51,439 - ERROR - service_vouchers.py:59 - Erro ao ativar voucher, voucher: 245959001110095, erro: list index out of range
+2023-02-03 14:19:56,090 - ERROR - service_vouchers.py:59 - Erro ao ativar voucher, voucher: 245959001110095, erro: list index out of range
+2023-02-03 14:20:17,035 - ERROR - service_vouchers.py:59 - Erro ao ativar voucher, voucher: 245959001110095, erro: list index out of range
+2023-02-03 14:20:48,623 - ERROR - service_vouchers.py:59 - Erro ao ativar voucher, voucher: 245959001110095, erro: list index out of range
+2023-02-03 14:22:20,244 - ERROR - service_vouchers.py:61 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'list' object has no attribute 'id_produto'
+2023-02-03 14:29:22,395 - ERROR - service_vouchers.py:69 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'list' object has no attribute 'ativo'
+2023-02-03 14:29:39,871 - ERROR - service_vouchers.py:69 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'list' object has no attribute 'ativo'
+2023-02-03 14:30:35,232 - ERROR - service_vouchers.py:69 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'list' object has no attribute 'id_produto'
+2023-02-03 14:30:56,155 - ERROR - service_vouchers.py:69 - Erro ao ativar voucher, voucher: 2459590011100954, erro: 'BakeProdutos' object has no attribute 'codigo_acesso'
+2023-02-03 15:05:48,416 - ERROR - service_vouchers.py:71 - Erro ao ativar voucher, voucher: 2932200011300954, erro: get() missing 1 required positional argument: 'url'
+2023-02-03 15:06:21,571 - ERROR - service_vouchers.py:71 - Erro ao ativar voucher, voucher: 2459410011200954, erro: get() missing 1 required positional argument: 'url'
+2023-02-03 16:55:09,398 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: 'dict' object has no attribute 'valorC5'
+2023-02-03 16:55:46,397 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: 'valorC5'
+2023-02-03 16:56:16,375 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: list indices must be integers or slices, not str
+2023-02-03 16:56:40,204 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: 0
+2023-02-03 16:57:03,618 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: 0
+2023-02-03 16:58:24,033 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: list indices must be integers or slices, not str
+2023-02-03 16:58:44,996 - ERROR - service_vouchers.py:74 - Erro ao ativar voucher, voucher: 2459410011200954, erro: 'list' object has no attribute 'valorC5'
+2023-02-06 11:56:36,386 - ERROR - service_vouchers.py:41 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 11:57:42,995 - ERROR - service_vouchers.py:41 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 11:58:33,523 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 11:58:59,973 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 11:59:36,540 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 12:00:41,997 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 12:01:19,629 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 12:01:46,543 - ERROR - service_vouchers.py:42 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_produto'
+2023-02-06 12:02:47,040 - ERROR - service_vouchers.py:45 - Erro ao buscar informações, voucher: 2932200011300954, erro: 'list' object has no attribute 'id_usuario'
+2023-02-06 12:25:44,762 - ERROR - service_vouchers.py:102 - Erro ao ativar voucher, voucher: 8646200011400954, erro: 3 validation errors for Voucher
+data_inclusao
+  str type expected (type=type_error.str)
+data_vencimento
+  str type expected (type=type_error.str)
+data_atualizacao
+  str type expected (type=type_error.str)
+2023-02-06 14:29:03,490 - ERROR - service_jogadas.py:112 - Erro ao buscar informações, cliente: 44185567880, erro: 'list' object has no attribute 'cod_acesso'
+2023-02-06 14:29:13,242 - ERROR - service_jogadas.py:112 - Erro ao buscar informações, cliente: 44185567880, erro: 'list' object has no attribute 'cod_acesso'
+2023-02-06 14:33:13,508 - ERROR - service_vouchers.py:101 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 14:34:05,877 - ERROR - service_vouchers.py:101 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 14:35:03,217 - ERROR - service_vouchers.py:101 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 15:13:57,084 - ERROR - service_vouchers.py:101 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 15:14:37,112 - ERROR - service_vouchers.py:101 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 15:17:04,974 - ERROR - service_vouchers.py:102 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 15:17:24,955 - ERROR - service_vouchers.py:102 - Erro ao ativar voucher, voucher: 9463400011500954, erro: 'itens'
+2023-02-06 19:07:46,282 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: (pymysql.err.OperationalError) (1305, 'FUNCTION meunagumo.trunc does not exist')
+[SQL: SELECT trunc(CURRENT_TIMESTAMP, %(trunc_2)s) AS trunc_1]
+[parameters: {'trunc_2': 'month'}]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2023-02-06 19:08:56,619 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: (pymysql.err.OperationalError) (1305, 'FUNCTION meunagumo.trunc does not exist')
+[SQL: SELECT trunc(bake_vouchers.data_atualizacao, %(trunc_2)s) AS trunc_1 
+FROM bake_vouchers]
+[parameters: {'trunc_2': 'month'}]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2023-02-06 19:11:05,206 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') AS truncate_1 \nFROM bake_vouchers' at line 1")
+[SQL: SELECT truncate(bake_vouchers.data_inclusao) AS truncate_1 
+FROM bake_vouchers]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-02-06 19:14:06,931 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: Cast.__init__() missing 1 required positional argument: 'type_'
+2023-02-06 19:24:44,985 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'Session' object has no attribute 'engine'
+2023-02-06 19:25:39,593 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'Session' object has no attribute 'get_engine'
+2023-02-06 19:25:41,966 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'Session' object has no attribute 'get_engine'
+2023-02-06 19:52:00,826 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'Session' object has no attribute 'get_engine'
+2023-02-06 19:53:09,644 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'function' object has no attribute 'execute'
+2023-02-06 19:54:00,584 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: 'Session' object has no attribute 'get_engine'
+2023-02-06 20:19:45,475 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: unconverted data remains: 23
+2023-02-06 20:20:28,299 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%d-%m-%y'
+2023-02-06 20:20:52,490 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%y-%m-%d'
+2023-02-06 20:25:07,095 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%d-%m-%y'
+2023-02-06 20:25:21,904 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%y-%m-%d'
+2023-02-06 20:25:47,192 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%y-%m-%d'
+2023-02-06 20:48:41,446 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data '2023-02-06' does not match format '%y-%m-%d'
+2023-02-07 13:53:58,805 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data 'undefined' does not match format '%Y-%m-%d'
+2023-02-07 13:55:51,454 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data 'undefined' does not match format '%Y-%m-%d'
+2023-02-07 16:23:05,129 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'rds.meunagumo.com.br' (timed out)")
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
