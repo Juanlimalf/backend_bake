@@ -62,6 +62,7 @@ def ativar_voucher(cod_voucher):
                 data_inclusao=str(response.data_inclusao),
                 data_vencimento=str(response.data_vencimento),
                 ativo=response.ativo,
+                data_ativacao=str(response.data_ativacao),
                 utilizado=response.utilizado,
                 data_atualizacao=str(response.data_atualizacao),
                 codigo_voucher=response.codigo_voucher,

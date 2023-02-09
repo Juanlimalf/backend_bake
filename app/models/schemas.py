@@ -54,6 +54,7 @@ class BakeVoucher(Base):
     data_inclusao = Column(DateTime, server_default=func.now())
     data_vencimento = Column(DateTime, default=data_validade)
     ativo = Column(Boolean, default=0)
+    data_ativacao = Column(DateTime)
     utilizado = Column(Boolean, default=0)
     data_atualizacao = Column(DateTime, onupdate=func.now())
     codigo_voucher = Column(Integer)
@@ -61,8 +62,8 @@ class BakeVoucher(Base):
 
     def __repr__(self):
         return f"""{self.id_voucher}, {self.id_compra}, {self.id_produto}, {self.id_usuario}, {self.id_jogada}, 
-                {self.data_inclusao}, {self.data_vencimento}, {self.ativo}, {self.utilizado}, {self.data_atualizacao}, 
-                {self.codigo_voucher}, {self.valor}"""
+                    {self.data_inclusao}, {self.data_vencimento}, {self.ativo}, {self.data_ativacao}, 
+                    {self.utilizado}, {self.data_atualizacao}, {self.codigo_voucher}, {self.valor}"""
 
 
 class BakeCompras(Base):

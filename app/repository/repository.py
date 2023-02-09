@@ -177,6 +177,7 @@ def ativar_voucher(voucher: object, valor:float, db: object):
 
     query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
     query.ativo = 1
+    query.data_ativacao = datetime.now()
     query.valor = valor
 
     response = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]

@@ -94,6 +94,7 @@ def jogadas_vouchers(cpf):
                     "data_inclusao": str(voucher.data_inclusao),
                     "data_vencimento": str(voucher.data_vencimento),
                     "ativo": voucher.ativo,
+                    "data_ativacao": str(voucher.data_ativacao),
                     "utilizado": voucher.utilizado,
                     "data_atualizacao": str(voucher.data_atualizacao),
                     "codigo_voucher": str(voucher.codigo_voucher),
@@ -116,8 +117,6 @@ def jogadas_vouchers(cpf):
 # Função para consumir as jogadas
 def consumir_jogada(jogada):
     try:
-        print(jogada.cpf, jogada.categoria)
-
         # Iniciando as listas
         lista_jogadas = []
         # Abrindo a conexão com o Banco

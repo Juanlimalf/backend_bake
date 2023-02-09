@@ -11,6 +11,7 @@ class Voucher(BaseModel):
     data_inclusao: str = Field(example="2000-01-01T00:00:00")
     data_vencimento: str = Field(example="2000-01-01T00:00:00")
     ativo: bool = Field(example=0)
+    data_ativacao: str = Field(example="2000-01-01T00:00:00")
     utilizado: bool = Field(example=0)
     data_atualizacao: str = Field(example="2000-01-01T00:00:00")
     codigo_voucher: str = Field(example="1234567891234567")
