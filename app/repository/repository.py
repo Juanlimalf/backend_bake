@@ -1,6 +1,7 @@
 from app.models.schemas import BakeProdutos, BakeVoucher, BakeCompras, Usuario, BakeJogadas
 import random
 from datetime import datetime
+import pytz
 
 
 def busca_id_cliente(cpf: str, db: object) -> int:
@@ -75,7 +76,8 @@ def consulta_jogadas(id_user: int, db: object) -> list:
 
 def consulta_voucher(id_user: int, db: object) -> list:
 
-    query = db.query(BakeVoucher).filter_by(id_usuario=id_user).order_by(BakeVoucher.utilizado.asc()).all()
+    query = db.query(BakeVoucher).filter_by(id_usuario=id_user)\
+        .order_by(BakeVoucher.utilizado.asc(), BakeVoucher.ativo.asc()).all()
 
     return query
 
@@ -91,12 +93,12 @@ def get_vouchers(loja: str, data: str, db: object):
 
     data_formatada = datetime.strptime(data, "%Y-%m-%d")
 
-    q_sql = f'''select bc.loja, bv.id_voucher, bv.codigo_voucher, bv.valor, bv.data_inclusao, bv.utilizado 
+    q_sql = f'''select bc.loja, bv.id_voucher, bv.codigo_voucher, bv.valor, bv.data_inclusao, bv.ativo
                 from bake_vouchers bv
                 inner join bake_compras bc on bv.id_compra = bc.id_compra 
                 WHERE CAST(bv.data_atualizacao as date) = '{data_formatada}'
                 and bc.loja = '{loja}'
-                and bv.utilizado = 1'''
+                and bv.ativo = 1'''
 
     query = db.get_engine().execute(q_sql).all()
 
@@ -128,6 +130,7 @@ def consumir_jogada(id_user: int, db: object):
 
 def random_produtos(categoria: str, db: object) -> object:
 
+    """ Sortear Backend escolhendo categoria e produto"""
     # controle = random.randint(1, 5)
     #
     # if controle == 1:
@@ -140,7 +143,13 @@ def random_produtos(categoria: str, db: object) -> object:
     #     return random.choice(prod)
     # query = db.query(BakeProdutos.categoria).filter_by(tipo="P").distinct().all()
     # cat_rand = random.choice(query)[0]
-    prod = db.query(BakeProdutos).filter_by(categoria=str(categoria), ativo=1).all()
+
+    """ Sortear Frontend escolhendo a categoria """
+    # prod = db.query(BakeProdutos).filter_by(categoria=str(categoria), ativo=1).all()
+
+    """Sortear sem escolher a categoria"""
+    prod = db.query(BakeProdutos).filter_by(ativo=1).all()
+
     return random.choice(prod)
 
 
@@ -175,9 +184,12 @@ def consumir_voucher(voucher: object, db: object):
 
 def ativar_voucher(voucher: object, valor:float, db: object):
 
+    tz = pytz.timezone('America/Sao_Paulo')
+    now = datetime.now(tz=tz)
+
     query = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
     query.ativo = 1
-    query.data_ativacao = datetime.now()
+    query.data_ativacao = now
     query.valor = valor
 
     response = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]

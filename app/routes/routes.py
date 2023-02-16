@@ -1,9 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
 from app.models.models_user import *
-from app.models.models_produtos import *
 from app.models.models_jogadas import *
 from app.models.models_vouches import *
 from app.models.models_compras import *
@@ -41,6 +40,12 @@ def validar_token(token: str = Depends(security)):
         raise HTTPException(status_code=400, detail="Token invalido ou expirado, faça o login novamente.")
 
 
+@app.get("/", tags=["Docs"])
+async def docs():
+
+    return RedirectResponse(url="/docs")
+
+
 @app.post("/login", status_code=200, tags=["Login"], description="Endpoint para login e geração de token",
           response_model=UserReturn, response_description="Resposta Padrão")
 def login(user: User):
@@ -61,8 +66,8 @@ async def gerar_jogadas(compra: Compras, token: str = Depends(validar_token)):
 
 
 # Endpoint para consultar a disponibilidade do voucher antes da utilização do mesmo.
-@app.get("/voucher/{loja}/{data}", status_code=200, tags=["Admin"], description="Consultar o voucher do cliente",
-         response_description="Resposta Padrão")
+@app.get("/voucher/{loja}/{data}", status_code=200, tags=["Admin"], description="Consultar o vouchers ativados na data",
+         response_description="Resposta Padrão", response_model=List[VoucherResponse])
 def consultar_voucher(loja: str, data: str, token: str = Depends(validar_token)):
 
     response = service_vouchers.consultar_voucher(loja=loja, data=data)

@@ -14,12 +14,24 @@ logger = log()
 # Funcão para consultar a disponibilidade do voucher
 def consultar_voucher(loja: str, data: str):
     try:
+        lista_voucher = []
         # Abrindo a conexão com o Banco
         with DBconnection() as db:
             # Consultar o voucher
             dados_voucher = repository.get_vouchers(loja=loja, data=data, db=db)
 
-            return dados_voucher
+        for dado in dados_voucher:
+            voucher = VoucherResponse(
+                loja=dado.loja,
+                id_voucher=dado.id_voucher,
+                codigo_voucher=dado.codigo_voucher,
+                valor=dado.valor,
+                data_inclusao=str(dado.data_inclusao),
+                ativo=dado.ativo,
+            )
+            lista_voucher.append(voucher)
+
+        return lista_voucher
 
     except Exception as e:
         print(e)
@@ -49,8 +61,14 @@ def ativar_voucher(cod_voucher):
             produto = repository.consulta_produto(id_prod=id_prod, db=db.session)
             cod_plu = produto[0].plu
             descricao_prod = produto[0].descricao_produto
-            prod_consinco = consulta_produto_c5(cod_plu).json()
-            valor_prod = prod_consinco["itens"][0]["valorC5"]
+            tipo = produto[0].tipo
+
+            # Buscando o preço da C5 se o item for produto.
+            if tipo == 'P':
+                prod_consinco = consulta_produto_c5(cod_plu).json()
+                valor_prod = prod_consinco["itens"][0]["valorC5"]
+            else:
+                valor_prod = 0
 
             response = repository.ativar_voucher(voucher=cod_voucher, valor=valor_prod, db=db.session)
 

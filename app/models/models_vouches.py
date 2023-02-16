@@ -29,3 +29,12 @@ class UtilizarVoucher(BaseModel):
     coo: str = Field(example="123456")
     checkout: str = Field(example="123")
     utilizado: bool = Field(example=1)
+
+
+class VoucherResponse(BaseModel):
+    loja: str = Field(example="01")
+    id_voucher: int = Field(example=123)
+    codigo_voucher: str = Field(example="0123456789101213")
+    valor: float = Field(example=999.99)
+    data_inclusao: str = Field(example="2000-01-01T00:00:00")
+    ativo: bool = Field(example=True)

@@ -99,3 +99,7 @@ FROM bake_vouchers]
 2023-02-07 13:55:51,454 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: time data 'undefined' does not match format '%Y-%m-%d'
 2023-02-07 16:23:05,129 - ERROR - service_vouchers.py:26 - Erro ao buscar informações, erro: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'rds.meunagumo.com.br' (timed out)")
 (Background on this error at: https://sqlalche.me/e/14/e3q8)
+2023-02-15 15:48:45,775 - ERROR - service_jogadas.py:170 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-02-16 12:12:40,394 - ERROR - service_vouchers.py:38 - Erro ao buscar informações, erro: 1 validation error for VoucherResponse
+data_inclusao
+  str type expected (type=type_error.str)
