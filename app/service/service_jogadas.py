@@ -1,10 +1,13 @@
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
+from fastapi import status
+
 from app.connection.connection_confg import DBconnection
 from app.repository import repository
 from app.models.models_user import *
 from app.models.models_jogadas import *
+from app.routes_api.router_request import valida_cpf
 from app.log.logger import log
-from fastapi.responses import JSONResponse
-from app.routes.router_request import valida_cpf
 
 
 logger = log()
@@ -51,13 +54,13 @@ def gera_jogadas(compra):
                 response = {
                     "message": 'Ja foi gerado jogada para a compra informada.'
                 }
-                return JSONResponse(response, status_code=401)
+                return JSONResponse(response, status_code=status.HTTP_401_UNAUTHORIZED)
 
     except Exception as e:
         print(e)
         logger.error(f"Erro ao gerar jogadas, cliente: {compra.cpf}, erro: {e}")
         db.session.rollback()
-
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Erro ao gerar jogadas, por gentileza entrar em contato com o suporte")
 
 # Função para consultar jogadas e voucher
 def jogadas_vouchers(cpf):
@@ -101,11 +104,14 @@ def jogadas_vouchers(cpf):
                     "valor": voucher.valor
                 }
                 lista_voucher.append(arq2)
+            
+            aceite_client = repository.consulta_aceite(id_cliente=id_client, db=db.session)
+
         # Montando o json
         arquivo = {
             "quant_jogada": len(jogadas),
-            "jogadas": lista_jogadas,
-            "vouchers": lista_voucher
+            "vouchers": lista_voucher,
+            "aceite_termos": aceite_client
         }
         return arquivo
     except Exception as e:
@@ -125,13 +131,12 @@ def consumir_jogada(jogada):
             id_client = repository.busca_id_cliente(cpf=jogada.cpf, db=db.session)
             # Validando se o cliente existe no banco, caso contrario retorna vazio
             if id_client == False:
-                return ListaJogadas(quant_jogada=0, jogadas=[])
+                return ListaJogadas(quant_jogada=0)
             # Consumindo a jogada cliente
             cons_jogadas = repository.consumir_jogada(id_user=id_client, db=db.session)
-
             # Validando se jogada existe
             if cons_jogadas == False:
-                return ListaJogadas(quant_jogada=0, jogadas=[])
+                return ListaJogadas(quant_jogada=0)
 
             else:
                 # Montando o arquivo de jogadas e inserindo na lista
@@ -157,8 +162,7 @@ def consumir_jogada(jogada):
                     "categoria": produto.categoria,
                     "tipo": produto.tipo
                 },
-                "quant_jogada": len(cons_jogadas[0]),
-                "jogadas": lista_jogadas
+                "quant_jogada": len(cons_jogadas[0])
             }
 
             # Gerando voucher para o cliente.
@@ -170,3 +174,27 @@ def consumir_jogada(jogada):
         logger.error(f"Erro ao buscar informações, cliente: {jogada.cpf}, erro: {e}")
         db.session.rollback()
         return False
+    
+
+def aceite_termos(aceite):
+    try:
+        # Abrindo a conexão com o Banco
+    
+        with DBconnection() as db:
+            # Buscando o ID do cliente.
+            id_client = repository.busca_id_cliente(cpf=aceite.cpf, db=db.session)
+            # Inserindo o aceite do cliente
+            resp = repository.aceite_termos(id_cliente=id_client, db=db.session)
+
+            if resp == False:
+                return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "usuário já aceitou os termos dessa campanha"})
+            else:
+                db.session.commit()
+
+                response = Message(message="Suscesso ao aceitar os termos.")
+                return response
+    except Exception as e:
+        print(e)
+        logger.error(f"Erro ao aceitar os termos. Erro: {e}")    
+        db.session.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Erro ao aceitar os termos. Por gentileza entrar em contato com o suporte")

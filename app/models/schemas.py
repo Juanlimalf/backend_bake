@@ -17,7 +17,7 @@ class BakeJogadas(Base):
 
     id_jogada = Column(Integer, primary_key=True, autoincrement=True)
     id_compra = Column(ForeignKey("bake_compras.id_compra"), nullable=False)
-    id_usuario = Column(ForeignKey("usuario.id_usuario"), nullable=False)
+    id_usuario = Column(Integer, nullable=False)
     data_inclusao = Column(DateTime, server_default=func.now())
     data_utilizacao = Column(DateTime, onupdate=func.now())
     utilizado = Column(Boolean)
@@ -49,7 +49,7 @@ class BakeVoucher(Base):
     id_voucher = Column(Integer, primary_key=True, autoincrement=True)
     id_compra = Column(ForeignKey("bake_compras.id_compra"), nullable=False)
     id_produto = Column(ForeignKey("bake_produtos.id_produto"), nullable=False)
-    id_usuario = Column(ForeignKey("usuario.id_usuario"), nullable=False)
+    id_usuario = Column(Integer, nullable=False)
     id_jogada = Column(ForeignKey("bake_jogadas.id_jogada"), nullable=False)
     data_inclusao = Column(DateTime, server_default=func.now())
     data_vencimento = Column(DateTime, default=data_validade)
@@ -75,20 +75,10 @@ class BakeCompras(Base):
     checkout = Column(String(3))
     valor = Column(Float)
     data_inclusao = Column(DateTime, server_default=func.now())
-    id_usuario = Column(Integer)
+    id_usuario = Column(Integer, nullable=False)
     gera_jogada = Column(Boolean)
-    usuario_inclusao = Column(String)
+    usuario_inclusao = Column(String(50))
 
     def __repr__(self):
         return f"""{self.id_compra}, {self.loja}, {self.coo}, {self.checkout}, 
             {str(self.data_inclusao)}, {self.id_usuario}, {self.gera_jogada}, {self.usuario_inclusao}"""
-
-
-class Usuario(Base):
-    __tablename__ = "usuario"
-
-    id_usuario = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String)
-
-    def __repr__(self):
-        return f"{self.id_usuario}, {self.username}"

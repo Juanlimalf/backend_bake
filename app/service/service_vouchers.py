@@ -5,7 +5,7 @@ from app.models.models_jogadas import *
 from app.models.models_vouches import *
 from app.log.logger import log
 from fastapi.responses import JSONResponse
-from app.routes.router_request import consulta_produto_c5
+from app.routes_api.router_request import consulta_produto_c5
 
 
 logger = log()
@@ -25,6 +25,7 @@ def consultar_voucher(loja: str, data: str):
                 loja=dado.loja,
                 id_voucher=dado.id_voucher,
                 codigo_voucher=dado.codigo_voucher,
+                descricao_produto=dado.descricao_produto,
                 valor=dado.valor,
                 data_inclusao=str(dado.data_inclusao),
                 ativo=dado.ativo,
@@ -115,7 +116,8 @@ def consumir_voucher(voucher):
                 return JSONResponse(response, status_code=200)
     except Exception as e:
         print(e)
-        logger.error(f"Erro ao consumir voucher, voucher: {dados.voucher}, erro: {e}")
+        logger.error(f"Erro ao consumir voucher, voucher: {voucher}, erro: {e}")
         db.session.rollback()
         response = {"message": "Não foi possivel utilizar o voucher"}
         return JSONResponse(response, status_code=400)
+    

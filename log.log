@@ -103,3 +103,85 @@ FROM bake_vouchers]
 2023-02-16 12:12:40,394 - ERROR - service_vouchers.py:38 - Erro ao buscar informações, erro: 1 validation error for VoucherResponse
 data_inclusao
   str type expected (type=type_error.str)
+2023-02-17 16:02:24,686 - ERROR - service_vouchers.py:39 - Erro ao buscar informações, erro: 1 validation error for VoucherResponse
+descricao_produto
+  field required (type=value_error.missing)
+2023-02-17 16:04:25,002 - ERROR - service_vouchers.py:39 - Erro ao buscar informações, erro: 1 validation error for VoucherResponse
+descricao_produto
+  field required (type=value_error.missing)
+2023-03-21 14:44:37,661 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1146, "Table 'campanhas_nagumo.usuario' doesn't exist")
+[SQL: SELECT usuario.id_usuario AS usuario_id_usuario 
+FROM usuario 
+WHERE usuario.username = %(username_1)s]
+[parameters: {'username_1': '44185567880'}]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:19:34,424 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: Textual column expression 'select id_usuario from me...' should be explicitly declared with text('select id_usuario from me...'), or use literal_column('select id_usuario from me...') for more specificity
+2023-03-21 16:21:18,076 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: name 'text' is not defined
+2023-03-21 16:21:39,776 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select id_usuario from meunagumo.usuario u where u.username = '44185567880'' at line 1")
+[SQL: SELECT select id_usuario from meunagumo.usuario u where u.username = '44185567880']
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:23:17,950 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select u.id_usuario from meunagumo.usuario u where u.username = '44185567880'' at line 1")
+[SQL: SELECT select u.id_usuario from meunagumo.usuario u where u.username = '44185567880']
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:23:53,993 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1146, "Table 'campanhas_nagumo.bake_jogadas' doesn't exist")
+[SQL: SELECT bake_jogadas.id_jogada AS bake_jogadas_id_jogada, bake_jogadas.id_compra AS bake_jogadas_id_compra, bake_jogadas.id_usuario AS bake_jogadas_id_usuario, bake_jogadas.data_inclusao AS bake_jogadas_data_inclusao, bake_jogadas.data_utilizacao AS bake_jogadas_data_utilizacao, bake_jogadas.utilizado AS bake_jogadas_utilizado 
+FROM bake_jogadas 
+WHERE bake_jogadas.id_usuario = %(id_usuario_1)s AND bake_jogadas.utilizado = false]
+[parameters: {'id_usuario_1': 954}]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:24:28,864 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: 'Session' object has no attribute 'select'
+2023-03-21 16:25:11,445 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'u.id_usuario from meunagumo.usuario u where u.username = '44185567880'' at line 1")
+[SQL: u.id_usuario from meunagumo.usuario u where u.username = '44185567880']
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:25:35,376 - ERROR - service_jogadas.py:113 - Erro ao buscar informações, cliente: 44185567880, erro: (pymysql.err.ProgrammingError) (1146, "Table 'campanhas_nagumo.bake_jogadas' doesn't exist")
+[SQL: SELECT bake_jogadas.id_jogada AS bake_jogadas_id_jogada, bake_jogadas.id_compra AS bake_jogadas_id_compra, bake_jogadas.id_usuario AS bake_jogadas_id_usuario, bake_jogadas.data_inclusao AS bake_jogadas_data_inclusao, bake_jogadas.data_utilizacao AS bake_jogadas_data_utilizacao, bake_jogadas.utilizado AS bake_jogadas_utilizado 
+FROM bake_jogadas 
+WHERE bake_jogadas.id_usuario = %(id_usuario_1)s AND bake_jogadas.utilizado = false]
+[parameters: {'id_usuario_1': 954}]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+2023-03-21 16:48:21,907 - ERROR - service_jogadas.py:58 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 16:49:50,874 - ERROR - service_jogadas.py:59 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 16:50:21,715 - ERROR - service_jogadas.py:60 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 16:51:02,424 - ERROR - service_jogadas.py:60 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:27:41,444 - ERROR - service_jogadas.py:60 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:30:27,409 - ERROR - service_jogadas.py:61 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:32:21,839 - ERROR - service_jogadas.py:61 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:33:34,643 - ERROR - service_jogadas.py:61 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:41:47,567 - ERROR - service_jogadas.py:61 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:44:29,799 - ERROR - service_jogadas.py:61 - Erro ao gerar jogadas, cliente: 44185567880, erro: insere_compra() got an unexpected keyword argument 'compra'
+2023-03-21 17:52:53,678 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 17:53:19,248 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 17:54:58,171 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 17:55:22,061 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 17:56:39,888 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 17:58:35,605 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 18:00:09,677 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 18:00:33,524 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 18:00:52,349 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 18:02:41,919 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-21 18:03:40,739 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: 'BakeJogadas' object is not iterable
+2023-03-21 18:04:06,529 - ERROR - service_jogadas.py:172 - Erro ao buscar informações, cliente: 44185567880, erro: 'BakeJogadas' object is not iterable
+2023-03-21 18:04:31,718 - ERROR - service_jogadas.py:172 - Erro ao buscar informações, cliente: 44185567880, erro: 'BakeJogadas' object is not iterable
+2023-03-22 08:08:55,592 - ERROR - service_jogadas.py:173 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:11:34,705 - ERROR - service_jogadas.py:173 - Erro ao buscar informações, cliente: 44185567880, erro: 'NoneType' object has no attribute 'utilizado'
+2023-03-22 08:12:40,190 - ERROR - service_jogadas.py:173 - Erro ao buscar informações, cliente: 44185567880, erro: 'NoneType' object has no attribute 'utilizado'
+2023-03-22 08:13:14,858 - ERROR - service_jogadas.py:173 - Erro ao buscar informações, cliente: 44185567880, erro: 'NoneType' object has no attribute 'utilizado'
+2023-03-22 08:28:18,868 - ERROR - service_jogadas.py:172 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:37:37,595 - ERROR - service_jogadas.py:172 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:42:19,654 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:43:29,899 - ERROR - service_jogadas.py:170 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:44:06,648 - ERROR - service_jogadas.py:170 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:45:31,583 - ERROR - service_jogadas.py:170 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:46:19,704 - ERROR - service_jogadas.py:171 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 08:48:06,295 - ERROR - service_jogadas.py:172 - Erro ao buscar informações, cliente: 44185567880, erro: list index out of range
+2023-03-22 11:09:49,125 - ERROR - service_jogadas.py:191 - Erro ao aceitar os termos. Erro: Session.execute() missing 1 required positional argument: 'statement'
+2023-03-22 11:14:10,373 - ERROR - service_jogadas.py:191 - Erro ao aceitar os termos. Erro: This result object does not return rows. It has been closed automatically.
+2023-03-22 11:23:27,981 - ERROR - service_jogadas.py:194 - Erro ao aceitar os termos. Erro: 
+2023-03-22 11:24:38,501 - ERROR - service_jogadas.py:194 - Erro ao aceitar os termos. Erro: 
+2023-03-22 11:25:10,541 - ERROR - service_jogadas.py:195 - Erro ao aceitar os termos. Erro: 
+2023-03-22 11:25:38,691 - ERROR - service_jogadas.py:195 - Erro ao aceitar os termos. Erro: 
+2023-03-22 12:04:20,928 - ERROR - service_jogadas.py:119 - Erro ao buscar informações, cliente: 44185567880, erro: consulta_aceite() got an unexpected keyword argument 'id_user'
+2023-03-22 12:05:54,273 - ERROR - service_jogadas.py:119 - Erro ao buscar informações, cliente: 44185567880, erro: object of type 'NoneType' has no len()
+2023-03-22 12:06:44,713 - ERROR - service_jogadas.py:119 - Erro ao buscar informações, cliente: 44185567880, erro: 'NoneType' object is not subscriptable
+2023-03-22 13:27:52,782 - ERROR - service_jogadas.py:119 - Erro ao buscar informações, cliente: 44378162857, erro: 'NoneType' object is not subscriptable
+2023-03-22 13:33:39,335 - ERROR - service_jogadas.py:119 - Erro ao buscar informações, cliente: 44378162857, erro: 'NoneType' object is not subscriptable

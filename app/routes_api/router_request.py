@@ -48,7 +48,7 @@ def consulta_produto_c5(plu):
     token = {
         "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiZGVzZW52b2x2aW1lbnRvVGkiLCJzZW5oYSI6InRlbGV2ZW5kYXMifQ.daDE-VRKV4y_1pqDxDLdSu3474b_J1sDBkwigWbTv8Q",
     }
-    url = f"https://endpointtelevendas.mixteratacadista.com.br/pedido/item/31/0/{plu}"
+    url = f"https://endpointtelevendas.mixteratacadista.com.br/pedido/item/51/0/{plu}"
 
     response = requests.get(url, headers=token)
 

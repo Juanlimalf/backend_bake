@@ -30,3 +30,8 @@ class DBconnection:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.session.close()
+
+    def create_tables(self):
+        from app.models.schemas import Base
+        Base.metadata.create_all(self.__engine)
+        

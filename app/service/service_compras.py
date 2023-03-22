@@ -54,3 +54,22 @@ def consulta_compra(cpf, id_compra):
         )
 
     return response
+
+
+def busca_produtos():
+    lista_produtos = []
+    with DBconnection() as db:
+
+        produtos = repository.consulta_produto_full(db=db.session)
+
+        for produto in produtos:
+            arq = {
+                "plu": produto.plu,
+                "cod_acesso": produto.cod_acesso,
+                "descricao_produto": produto.descricao_produto,
+                "categoria": produto.categoria,
+                "tipo": produto.tipo
+            }
+            lista_produtos.append(arq)
+
+        return lista_produtos

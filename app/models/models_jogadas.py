@@ -7,19 +7,17 @@ class Jogadas(BaseModel):
     id_jogada: int = Field(example=1)
     id_compra: int = Field(example=1)
     id_usuario: int = Field(example=1)
-    data_inclusao: str = Field(example="2000-01-01T00:00:00")
+    data_inclusao: str = Field(example="2000-01-01 00:00:00")
     utilizado: bool = Field(example=False)
 
 
 class ListaJogadas(BaseModel):
     quant_jogada: int = Field(example=0)
-    jogadas: List[Jogadas]
 
 
 class JogadasConsumidas(BaseModel):
     produto_sorteado: Optional[Produto]
     quant_jogada: int = Field(example=0)
-    jogadas: List[Jogadas]
 
 
 class GeraJogada(BaseModel):

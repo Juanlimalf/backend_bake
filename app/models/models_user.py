@@ -17,3 +17,8 @@ class UserReturn(BaseModel):
     access_token: str
     token_type: str = Field(default="Bearer")
     expires_in: int = Field(default=3600)
+
+
+class Aceite(BaseModel):
+    cpf: str = Field(max_length=11, min_length=11, example="99999999999")
+    aceite: int = Field(example=1, default=1)

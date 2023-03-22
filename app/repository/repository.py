@@ -1,11 +1,15 @@
-from app.models.schemas import BakeProdutos, BakeVoucher, BakeCompras, Usuario, BakeJogadas
+from app.models.schemas import BakeProdutos, BakeVoucher, BakeCompras, BakeJogadas
 import random
 from datetime import datetime
 import pytz
+from sqlalchemy import text
 
 
 def busca_id_cliente(cpf: str, db: object) -> int:
-    query = db.query(Usuario.id_usuario).filter(Usuario.username == f'{cpf}').all()
+
+    select = text(f"select u.id_usuario from meunagumo.usuario u where u.username = '{cpf}'")
+
+    query = db.execute(select).all()
 
     if query == []:
         return False
@@ -13,7 +17,7 @@ def busca_id_cliente(cpf: str, db: object) -> int:
         return query[0][0]
 
 
-def insere_compra(id_client: int, gera_jogada: bool, compra, db: object) -> int:
+def insere_compra(id_client: int, gera_jogada: bool, compra: object, db: object) -> int:
     compra = BakeCompras(
         loja=str(compra.loja),
         coo=str(compra.coo),
@@ -93,14 +97,16 @@ def get_vouchers(loja: str, data: str, db: object):
 
     data_formatada = datetime.strptime(data, "%Y-%m-%d")
 
-    q_sql = f'''select bc.loja, bv.id_voucher, bv.codigo_voucher, bv.valor, bv.data_inclusao, bv.ativo
+    select = f'''select bc.loja, bv.id_voucher, bv.codigo_voucher, 
+                bp.descricao_produto, bv.valor, bv.data_inclusao, bv.ativo
                 from bake_vouchers bv
-                inner join bake_compras bc on bv.id_compra = bc.id_compra 
+                inner join bake_compras bc on bv.id_compra = bc.id_compra
+                inner join bake_produtos bp on bp.id_produto = bv.id_produto 
                 WHERE CAST(bv.data_atualizacao as date) = '{data_formatada}'
                 and bc.loja = '{loja}'
                 and bv.ativo = 1'''
 
-    query = db.get_engine().execute(q_sql).all()
+    query = db.execute(select).all()
 
     return query
 
@@ -112,17 +118,23 @@ def consulta_produto(id_prod: int, db: object) -> list:
     return query
 
 
+def consulta_produto_full(db: object) -> list:
+
+    query = db.query(BakeProdutos).filter_by(ativo=1).all()
+
+    return query
+
+
 def consumir_jogada(id_user: int, db: object):
 
     jogada = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).\
         order_by(BakeJogadas.id_compra.asc()).first()
-
     if jogada == None:
-
         return False
-
+    
     else:
         jogada.utilizado = 1
+
         query = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).all()
 
         return query, jogada
@@ -149,6 +161,7 @@ def random_produtos(categoria: str, db: object) -> object:
 
     """Sortear sem escolher a categoria"""
     prod = db.query(BakeProdutos).filter_by(ativo=1).all()
+    print(prod)
 
     return random.choice(prod)
 
@@ -195,3 +208,30 @@ def ativar_voucher(voucher: object, valor:float, db: object):
     response = db.query(BakeVoucher).filter_by(codigo_voucher=voucher).all()[0]
 
     return response
+
+
+def aceite_termos(id_cliente, db):
+
+    select = text(f"SELECT * FROM aceite_campanhas WHERE id_campanha = 1 and id_usuario = {id_cliente} and aceite = 1")
+
+    select_query = db.execute(select).all()
+    
+    if len(select_query) > 0:
+        return False
+    else:
+        insert = text(f"INSERT INTO aceite_campanhas(id_campanha, id_usuario, aceite) values(1, {id_cliente}, 1)")
+        insert_query = db.execute(insert)
+
+        return True
+    
+
+def consulta_aceite(id_cliente, db):
+
+    select = text(f"SELECT aceite FROM aceite_campanhas WHERE id_campanha = 1 and id_usuario = {id_cliente}")
+
+    select_query = db.execute(select).first()
+
+    if select_query == None:
+        return 0
+    else:
+        return select_query[0]
