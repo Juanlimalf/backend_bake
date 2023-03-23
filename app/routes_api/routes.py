@@ -72,15 +72,6 @@ def consulta_compras(cpf: str, token: str = Depends(validar_token)):
     return response
 
 
-@router_bakeshop.get("/compras/{cpf}/{id}", status_code=status.HTTP_200_OK, tags=["Admin"], description="Consultar as Compra pelo ID",
-         response_model=Compras, response_description="Resposta Padrão")
-def consulta_compra(cpf: str, id: int, token: str = Depends(validar_token)):
-
-    response = service_compras.consulta_compra(cpf, id)
-
-    return response
-
-
 # O Game irar consumir esse endpoint e disponibilizar para o usuario
 @router_bakeshop.get("/jogadas/{cpf}", status_code=status.HTTP_200_OK, tags=["GAME"], description="Consultar as jogadas e vouchers do ref ao CPF",
          response_model=ListaJogadasVoucher, response_description="Resposta Padrão")

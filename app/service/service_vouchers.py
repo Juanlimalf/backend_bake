@@ -18,7 +18,7 @@ def consultar_voucher(loja: str, data: str):
         # Abrindo a conexão com o Banco
         with DBconnection() as db:
             # Consultar o voucher
-            dados_voucher = repository.get_vouchers(loja=loja, data=data, db=db)
+            dados_voucher = repository.get_vouchers(loja=loja, data=data, db=db.session)
 
         for dado in dados_voucher:
             voucher = VoucherResponse(

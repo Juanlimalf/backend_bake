@@ -37,25 +37,6 @@ def consulta_compras_cliente(cpf: str):
         logger.error(f"Erro ao buscar informações de compras, CPF: {cpf} erro: {e}")
 
 
-def consulta_compra(cpf, id_compra):
-    with DBconnection() as db:
-
-        id_client = repository.busca_id_cliente(cpf=cpf, db=db.session)
-
-        compra = repository.consulta_compra(id_client=id_client, id_compra=id_compra, db=db.session)
-
-        response = Compras(
-            cpf=cpf,
-            loja=compra[0].loja,
-            coo=compra[0].coo,
-            checkout=compra[0].checkout,
-            valor=compra[0].valor,
-            user_inclusao=compra[0].usuario_inclusao
-        )
-
-    return response
-
-
 def busca_produtos():
     lista_produtos = []
     with DBconnection() as db:
