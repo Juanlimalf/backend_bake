@@ -161,7 +161,6 @@ def random_produtos(categoria: str, db: object) -> object:
 
     """Sortear sem escolher a categoria"""
     prod = db.query(BakeProdutos).filter_by(ativo=1).all()
-    print(prod)
 
     return random.choice(prod)
 
@@ -174,15 +173,17 @@ def gera_voucher(jogada: object, produto: object, db: object):
         id_usuario=jogada.id_usuario,
         id_jogada=jogada.id_jogada
     )
+
     db.add(voucher)
+    
     v = db.query(BakeVoucher).filter_by(id_compra=jogada.id_compra,
                                         id_produto=produto.id_produto,
                                         id_usuario=jogada.id_usuario,
                                         id_jogada=jogada.id_jogada).order_by(BakeVoucher.id_voucher.desc()).first()
 
-    v.codigo_voucher = f"{'{:05d}'.format(jogada.id_usuario)}" \
-                       f"{'{:06}'.format(produto.cod_acesso)}" \
-                       f"{'{:05}'.format(v.id_voucher)}"
+    cod_voucher = f"{'{:05d}'.format(jogada.id_usuario)}{'{:06}'.format(produto.cod_acesso)}{'{:05}'.format(v.id_voucher)}"
+    
+    v.codigo_voucher = cod_voucher
 
 
 def consumir_voucher(voucher: object, db: object):

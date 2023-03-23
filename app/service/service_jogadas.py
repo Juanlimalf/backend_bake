@@ -167,8 +167,11 @@ def consumir_jogada(jogada):
 
             # Gerando voucher para o cliente.
             repository.gera_voucher(jogada=cons_jogadas[1], produto=produto, db=db.session)
+
             db.session.commit()
+            
             return jogadas
+        
     except Exception as e:
         print(e)
         logger.error(f"Erro ao buscar informações, cliente: {jogada.cpf}, erro: {e}")

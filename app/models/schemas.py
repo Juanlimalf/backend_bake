@@ -57,7 +57,7 @@ class BakeVoucher(Base):
     data_ativacao = Column(DateTime)
     utilizado = Column(Boolean, default=0)
     data_atualizacao = Column(DateTime, onupdate=func.now())
-    codigo_voucher = Column(Integer)
+    codigo_voucher = Column(String(16))
     valor = Column(Float)
 
     def __repr__(self):
