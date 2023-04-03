@@ -120,4 +120,25 @@ def consumir_voucher(voucher):
         db.session.rollback()
         response = {"message": "Não foi possivel utilizar o voucher"}
         return JSONResponse(response, status_code=400)
-    
+
+
+def desativar_voucher(cod_voucher):
+    try:
+        # Abrindo a conexão com o Banco
+        with DBconnection() as db:
+            # enviando o voucher para ser consumido
+            use_voucher = repository.desativar_voucher(cod_voucher, db.session)
+            # Verificando se o voucher é valido
+            if not use_voucher:
+                response = {"message": "Voucher não foi encontrado"}
+                return JSONResponse(response, status_code=400)
+            else:
+                db.session.commit()
+                response = {"message": "Voucher desativado com sucesso"}
+                return JSONResponse(response, status_code=200)
+    except Exception as e:
+        print(e)
+        logger.error(f"Erro ao desativar voucher, voucher: {cod_voucher}, erro: {e}")
+        db.session.rollback()
+        response = {"message": "Não foi possivel desativar o voucher"}
+        return JSONResponse(response, status_code=400)

@@ -9,7 +9,3 @@ class Compras(BaseModel):
     checkout: str = Field(max_length=3, example="999")
     valor: float = Field(example=999.99)
     user_inclusao: str = Field(example="nome.sobrenome")
-
-
-class ListaCompras(BaseModel):
-    compras: List[Compras]

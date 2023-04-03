@@ -1,8 +1,7 @@
-from app.connection.connection_confg import DBconnection
-from app.repository import repository
-from app.models.models_compras import *
+from app.connection import DBconnection
+from app import repository
+from app.models import *
 from app.log.logger import log
-
 
 logger = log()
 
@@ -18,12 +17,37 @@ def consulta_compras_cliente(cpf: str):
 
             for compra in compras:
                 arq = {
-                    "cpf":cpf,
-                    "loja":compra.loja,
-                    "coo":compra.coo,
-                    "checkout":compra.checkout,
-                    "valor":compra.valor,
-                    "user_inclusao":compra.usuario_inclusao
+                    "cpf": cpf,
+                    "loja": compra.loja,
+                    "coo": compra.coo,
+                    "checkout": compra.checkout,
+                    "valor": compra.valor,
+                    "user_inclusao": compra.usuario_inclusao
+                }
+
+                lista_compra.append(arq)                
+        response = lista_compra
+
+        return response
+
+    except Exception as e:
+        print(f"Erro ao buscar informações de compras, CPF: {cpf} erro: {e}")
+        logger.error(f"Erro ao buscar informações de compras, CPF: {cpf} erro: {e}")
+
+
+def consulta_compras(data: str, loja: str):
+    try:
+        lista_compra = []
+        with DBconnection() as db:
+            compras = repository.get_compras(data=data, loja=loja, db=db.session)
+
+            for compra in compras:
+                arq = {
+                    "loja": compra.loja,
+                    "coo": compra.coo,
+                    "checkout": compra.checkout,
+                    "valor": compra.valor,
+                    "user_inclusao": compra.usuario_inclusao
                 }
 
                 lista_compra.append(arq)
@@ -33,8 +57,8 @@ def consulta_compras_cliente(cpf: str):
         return response
 
     except Exception as e:
-        print(f"Erro ao buscar informações de compras, CPF: {cpf} erro: {e}")
-        logger.error(f"Erro ao buscar informações de compras, CPF: {cpf} erro: {e}")
+        print(f"Erro ao buscar informações de compras, erro: {e}")
+        logger.error(f"Erro ao buscar informações de compras erro: {e}")
 
 
 def busca_produtos():

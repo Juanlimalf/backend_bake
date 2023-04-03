@@ -34,4 +34,3 @@ class DBconnection:
     def create_tables(self):
         from app.models.schemas import Base
         Base.metadata.create_all(self.__engine)
-        

@@ -4,8 +4,7 @@ from fastapi import status
 
 from app.connection.connection_confg import DBconnection
 from app.repository import repository
-from app.models.models_user import *
-from app.models.models_jogadas import *
+from app.models import ListaJogadas, Message, GeraJogada, JogadasConsumidas, Voucher, Produto, Aceite
 from app.routes_api.router_request import valida_cpf
 from app.log.logger import log
 
@@ -61,6 +60,7 @@ def gera_jogadas(compra):
         logger.error(f"Erro ao gerar jogadas, cliente: {compra.cpf}, erro: {e}")
         db.session.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Erro ao gerar jogadas, por gentileza entrar em contato com o suporte")
+
 
 # Função para consultar jogadas e voucher
 def jogadas_vouchers(cpf):
@@ -137,18 +137,6 @@ def consumir_jogada(jogada):
             # Validando se jogada existe
             if cons_jogadas == False:
                 return ListaJogadas(quant_jogada=0)
-
-            else:
-                # Montando o arquivo de jogadas e inserindo na lista
-                for jog in cons_jogadas[0]:
-                    arq = {
-                        "id_jogada": jog.id_jogada,
-                        "id_compra": jog.id_compra,
-                        "id_usuario": jog.id_usuario,
-                        "data_inclusao": str(jog.data_inclusao),
-                        "utilizado": jog.utilizado
-                    }
-                    lista_jogadas.append(arq)
 
             # Sortendo um produto para essa jogada.
             produto = repository.random_produtos(categoria=jogada.categoria, db=db.session)

@@ -1,9 +1,40 @@
 import requests
-from app.models.models_user import *
+from app.models import UserReturn
 from app.service.security import encode_jwt
 
 
-users_admin = ["juan.costa", "leonardo.abe", "marcelo.thome"]
+users_admin = [
+    {
+        "nome": "Juan Lima",
+        "usuario_ad": "juan.costa",
+        "role_client": 2,
+        "password": "JUan2837"
+    }, {
+        "nome": "Leonardo",
+        "usuario_ad": "leonardo.abe",
+        "role_client": 2,
+        "password": "senhas123"
+    }, {
+        "nome": "Marcelo",
+        "usuario_ad": "marcelo.thome",
+        "role_client": 2,
+        "password": "senhas123"
+    }, {
+        "nome": "Franklin",
+        "usuario_ad": "franklin.campos",
+        "role_client": 1,
+        "password": "senhas123"
+    }, {
+        "nome": "Vania",
+        "usuario_ad": "vania.felipe",
+        "role_client": 2,
+        "password": "123456"
+    }, {
+        "nome": "Balcao",
+        "usuario_ad": "balcao.loja51",
+        "role_client": 1,
+        "password": "123456"
+    }]
 
 
 def valida_cpf(cpf):
@@ -12,10 +43,10 @@ def valida_cpf(cpf):
     body = {
         "id": cpf
     }
-    retorno = requests.post(url=url, json=body)
+    requests.post(url=url, json=body)
 
 
-def requestLoginAd(user:str, password:str):
+def requestLoginAd(user: str, password: str):
 
     url = "https://apigc.nagumo.com.br/api/v1/login"
 
@@ -25,23 +56,38 @@ def requestLoginAd(user:str, password:str):
     }
 
     retorno = requests.post(url, body)
+    token = encode_jwt()
 
     if retorno.status_code != 200:
-        return False
-    else:
+        for u in users_admin:
+            if u["usuario_ad"].lower() == user.lower() and u["password"] == password:
 
+                response = UserReturn(
+                    nome=u["nome"],
+                    usuario_ad=u["usuario_ad"],
+                    role_client=u["role_client"],
+                    access_token=token)
+                return response
+            else:
+                False
+    else:
         nome = retorno.json()["data"]["user"]["name"]
         user_ad = retorno.json()["data"]["user"]["username_ad"]
-        token = encode_jwt()
+
+        for u in users_admin:
+            print(u["usuario_ad"].lower() == user.lower())
+            if u["usuario_ad"].lower() == user.lower():
+                role_client = 2
+                break
+            else:
+                role_client = 1
 
         response = UserReturn(
             nome=nome,
             usuario_ad=user_ad,
-            role_client=1 if user_ad not in users_admin else 2,
-            access_token=token
-        )
-
-    return response
+            role_client=role_client,
+            access_token=token)
+        return response
 
 
 def consulta_produto_c5(plu):

@@ -22,4 +22,4 @@ class JogadasConsumidas(BaseModel):
 
 class GeraJogada(BaseModel):
     cpf: str = Field(max_length=11, min_length=11, example="99999999999")
-    categoria: str = Field(example="CATEGORIA")
+    categoria: Optional[str] = Field(example="CATEGORIA")
