@@ -104,7 +104,7 @@ def jogadas_vouchers(cpf):
                     "valor": voucher.valor
                 }
                 lista_voucher.append(arq2)
-            
+
             aceite_client = repository.consulta_aceite(id_cliente=id_client, db=db.session)
 
         # Montando o json
@@ -157,20 +157,20 @@ def consumir_jogada(jogada):
             repository.gera_voucher(jogada=cons_jogadas[1], produto=produto, db=db.session)
 
             db.session.commit()
-            
+
             return jogadas
-        
+
     except Exception as e:
         print(e)
         logger.error(f"Erro ao buscar informações, cliente: {jogada.cpf}, erro: {e}")
         db.session.rollback()
         return False
-    
+
 
 def aceite_termos(aceite):
     try:
         # Abrindo a conexão com o Banco
-    
+
         with DBconnection() as db:
             # Buscando o ID do cliente.
             id_client = repository.busca_id_cliente(cpf=aceite.cpf, db=db.session)
@@ -186,6 +186,6 @@ def aceite_termos(aceite):
                 return response
     except Exception as e:
         print(e)
-        logger.error(f"Erro ao aceitar os termos. Erro: {e}")    
+        logger.error(f"Erro ao aceitar os termos. Erro: {e}")
         db.session.rollback()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Erro ao aceitar os termos. Por gentileza entrar em contato com o suporte")

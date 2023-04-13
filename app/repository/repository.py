@@ -46,17 +46,17 @@ def consultaCompras(id_client: int, db: object):
 
 def get_compras(data: str, loja: str, db: object):
 
-    compras = db.query(BakeCompras).filter(BakeCompras.loja == loja, 
+    compras = db.query(BakeCompras).filter(BakeCompras.loja == loja,
                                            cast(BakeCompras.data_inclusao, Date) == data).all()
 
-    # query = text(f"""SELECT bake_compras.id_compra, 
-    #                     bake_compras.loja, 
-    #                     bake_compras.coo, 
-    #                     bake_compras.checkout, 
-    #                     bake_compras.valor, 
-    #                     bake_compras.data_inclusao, 
-    #                     bake_compras.id_usuario, 
-    #                     bake_compras.gera_jogada, 
+    # query = text(f"""SELECT bake_compras.id_compra,
+    #                     bake_compras.loja,
+    #                     bake_compras.coo,
+    #                     bake_compras.checkout,
+    #                     bake_compras.valor,
+    #                     bake_compras.data_inclusao,
+    #                     bake_compras.id_usuario,
+    #                     bake_compras.gera_jogada,
     #                     bake_compras.usuario_inclusao
     #                     FROM bake_compras
     #                     WHERE bake_compras.loja = '{loja}' and bake_compras.data_inclusao = '{data}'""")
@@ -150,7 +150,7 @@ def consumir_jogada(id_user: int, db: object):
 
     jogada = db.query(BakeJogadas).filter_by(id_usuario=id_user, utilizado=False).\
         order_by(BakeJogadas.id_compra.asc()).first()
-    if jogada == None:
+    if jogada is None:
         return False
     else:
         jogada.utilizado = 1
@@ -186,14 +186,14 @@ def random_produtos(categoria: str, db: object) -> object:
 
 
 def gera_voucher(jogada: object, produto: object, db: object):
-    
-    cod_voucher = f"{'{:05d}'.format(jogada.id_usuario)}{produto.cod_acesso.zfill(6)}{'{:05d}'.format(jogada.id_compra)}"
-    
+
+    cod_voucher = f"{'{:05d}'.format(random.randint(0, 99999))}{produto.cod_acesso.zfill(6)}{'{:05d}'.format(jogada.id_compra)}"
+
     voucher = BakeVoucher(
         id_compra=jogada.id_compra,
         id_produto=produto.id_produto,
         id_usuario=jogada.id_usuario,
-        id_jogada=jogada.id_jogada, 
+        id_jogada=jogada.id_jogada,
         codigo_voucher=cod_voucher
     )
 
@@ -249,7 +249,7 @@ def consulta_aceite(id_cliente, db):
 
     select_query = db.execute(select).first()
 
-    if select_query == None:
+    if select_query is None:
         return 0
     else:
         return select_query[0]

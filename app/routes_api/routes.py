@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from fastapi import status
 from typing import List
@@ -22,12 +22,6 @@ def validar_token(token: str = Depends(security)):
     if not validatoken:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Token invalido ou expirado, faça o login novamente.")
-
-
-@router_bakeshop.get("/", tags=["Docs"], include_in_schema=False)
-async def docs():
-
-    return RedirectResponse(url="/docs")
 
 
 @router_bakeshop.post("/login", status_code=status.HTTP_200_OK, tags=["Login"],

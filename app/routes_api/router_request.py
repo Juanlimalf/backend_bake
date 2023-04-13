@@ -75,7 +75,6 @@ def requestLoginAd(user: str, password: str):
         user_ad = retorno.json()["data"]["user"]["username_ad"]
 
         for u in users_admin:
-            print(u["usuario_ad"].lower() == user.lower())
             if u["usuario_ad"].lower() == user.lower():
                 role_client = 2
                 break

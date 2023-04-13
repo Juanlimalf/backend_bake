@@ -1,5 +1,7 @@
 from app.routes_api.routes import router_bakeshop
+
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,8 +23,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
+
+@app.get("/", tags=["Docs"], include_in_schema=False)
+async def docs():
+
+    return RedirectResponse(url="/docs")
+
+
 app.include_router(router_bakeshop)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8004, log_level="info", reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8004, log_level="info")
