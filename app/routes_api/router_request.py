@@ -8,33 +8,52 @@ users_admin = [
         "nome": "Juan Lima",
         "usuario_ad": "juan.costa",
         "role_client": 2,
-        "password": "JUan2837"
+        "password": "JUan2837",
+        "loja": "51"
     }, {
         "nome": "Leonardo",
         "usuario_ad": "leonardo.abe",
         "role_client": 2,
-        "password": "senhas123"
+        "password": "senhas123",
+        "loja": "51"
     }, {
         "nome": "Marcelo",
         "usuario_ad": "marcelo.thome",
         "role_client": 2,
-        "password": "senhas123"
+        "password": "senhas123",
+        "loja": "51"
     }, {
         "nome": "Franklin",
         "usuario_ad": "franklin.campos",
         "role_client": 1,
-        "password": "senhas123"
+        "password": "senhas123",
+        "loja": "51"
     }, {
         "nome": "Vania",
         "usuario_ad": "vania.felipe",
         "role_client": 2,
-        "password": "123456"
+        "password": "123456",
+        "loja": "51"
     }, {
         "nome": "Balcao",
         "usuario_ad": "balcao.loja51",
         "role_client": 1,
-        "password": "123456"
-    }]
+        "password": "123456",
+        "loja": "51"
+    }, {
+        "nome": "Vitrine Loja 51",
+        "usuario_ad": "Vitrine.loja51",
+        "role_client": 1,
+        "password": "123456",
+        "loja": "51"
+    }, {
+        "nome": "Vitrine Loja 15",
+        "usuario_ad": "Vitrine.loja15",
+        "role_client": 1,
+        "password": "123456",
+        "loja": "15"
+    }
+]
 
 
 def valida_cpf(cpf):
@@ -66,7 +85,10 @@ def requestLoginAd(user: str, password: str):
                     nome=u["nome"],
                     usuario_ad=u["usuario_ad"],
                     role_client=u["role_client"],
-                    access_token=token)
+                    access_token=token,
+                    loja=u["loja"]
+                )
+
                 return response
             else:
                 False
@@ -85,7 +107,10 @@ def requestLoginAd(user: str, password: str):
             nome=nome,
             usuario_ad=user_ad,
             role_client=role_client,
-            access_token=token)
+            access_token=token,
+            loja="601"
+        )
+
         return response
 
 
